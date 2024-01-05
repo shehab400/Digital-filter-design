@@ -51,17 +51,17 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
-          <widget class="QLabel" name="label_2">
+          <widget class="QLabel" name="label">
            <property name="minimumSize">
             <size>
-             <width>30</width>
-             <height>30</height>
+             <width>40</width>
+             <height>40</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>30</width>
-             <height>30</height>
+             <width>40</width>
+             <height>40</height>
             </size>
            </property>
            <property name="text">
@@ -269,7 +269,7 @@
               </font>
              </property>
              <property name="text">
-              <string>Music Equalizer</string>
+              <string>All Pass-Filter</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -289,27 +289,7 @@
               </font>
              </property>
              <property name="text">
-              <string>Animals Equalizer</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-         <widget class="QWidget" name="page_4">
-          <layout class="QGridLayout" name="gridLayout_7">
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_7">
-             <property name="font">
-              <font>
-               <family>Segoe UI</family>
-               <pointsize>16</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>Medical Signal</string>
+              <string>Output</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -323,12 +303,16 @@
        <item row="1" column="0">
         <widget class="QStackedWidget" name="stackedWidget_2">
          <property name="currentIndex">
-          <number>2</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="page_5">
           <layout class="QGridLayout" name="gridLayout_5">
            <item row="0" column="0" colspan="2">
             <widget class="QWidget" name="widget_2" native="true">
+             <property name="styleSheet">
+              <string notr="true">  border: 2px solid rgb(25, 0, 108);
+  border-radius: 10px;</string>
+             </property>
              <layout class="QGridLayout" name="gridLayout_9">
               <item row="0" column="0" alignment="Qt::AlignTop">
                <widget class="QLabel" name="label_5">
@@ -337,19 +321,30 @@
                   <pointsize>14</pointsize>
                  </font>
                 </property>
+                <property name="styleSheet">
+                 <string notr="true">border:0px</string>
+                </property>
                 <property name="text">
                  <string>Z-Pole</string>
                 </property>
                </widget>
               </item>
               <item row="1" column="0">
-               <widget class="QWidget" name="widget_11" native="true"/>
+               <widget class="QWidget" name="widget_11" native="true">
+                <property name="styleSheet">
+                 <string notr="true">border:0px</string>
+                </property>
+               </widget>
               </item>
              </layout>
             </widget>
            </item>
            <item row="1" column="0" colspan="3">
             <widget class="QWidget" name="widget_5" native="true">
+             <property name="styleSheet">
+              <string notr="true">  border: 2px solid rgb(25, 0, 108);
+  border-radius: 10px;</string>
+             </property>
              <layout class="QGridLayout" name="gridLayout_11">
               <item row="0" column="0" alignment="Qt::AlignTop">
                <widget class="QLabel" name="label_9">
@@ -358,13 +353,20 @@
                   <pointsize>14</pointsize>
                  </font>
                 </property>
+                <property name="styleSheet">
+                 <string notr="true">border:0px</string>
+                </property>
                 <property name="text">
                  <string>Magnitude Response</string>
                 </property>
                </widget>
               </item>
               <item row="1" column="0">
-               <widget class="QWidget" name="widget_9" native="true"/>
+               <widget class="QWidget" name="widget_9" native="true">
+                <property name="styleSheet">
+                 <string notr="true">border:0px</string>
+                </property>
+               </widget>
               </item>
              </layout>
             </widget>
@@ -434,6 +436,10 @@
            </item>
            <item row="2" column="0" colspan="3">
             <widget class="QWidget" name="widget_6" native="true">
+             <property name="styleSheet">
+              <string notr="true">  border: 2px solid rgb(25, 0, 108);
+  border-radius: 10px;</string>
+             </property>
              <layout class="QGridLayout" name="gridLayout_10">
               <item row="0" column="0" alignment="Qt::AlignTop">
                <widget class="QLabel" name="label_8">
@@ -442,13 +448,20 @@
                   <pointsize>14</pointsize>
                  </font>
                 </property>
+                <property name="styleSheet">
+                 <string notr="true">border:0px</string>
+                </property>
                 <property name="text">
                  <string>Phase Response</string>
                 </property>
                </widget>
               </item>
               <item row="1" column="0">
-               <widget class="QWidget" name="widget_10" native="true"/>
+               <widget class="QWidget" name="widget_10" native="true">
+                <property name="styleSheet">
+                 <string notr="true">border:0px</string>
+                </property>
+               </widget>
               </item>
              </layout>
             </widget>
@@ -459,6 +472,10 @@
           <layout class="QGridLayout" name="gridLayout_21">
            <item row="0" column="0">
             <widget class="QWidget" name="widget_7" native="true">
+             <property name="styleSheet">
+              <string notr="true">  border: 2px solid rgb(25, 0, 108);
+  border-radius: 10px;</string>
+             </property>
              <layout class="QGridLayout" name="gridLayout_12">
               <item row="0" column="0" alignment="Qt::AlignTop">
                <widget class="QLabel" name="label_10">
@@ -467,19 +484,29 @@
                   <pointsize>14</pointsize>
                  </font>
                 </property>
+                <property name="styleSheet">
+                 <string notr="true">border:0px</string>
+                </property>
                 <property name="text">
                  <string>Z-Pole</string>
                 </property>
                </widget>
               </item>
               <item row="1" column="0">
-               <widget class="QWidget" name="widget_12" native="true"/>
+               <widget class="QWidget" name="widget_12" native="true">
+                <property name="styleSheet">
+                 <string notr="true">border:0px</string>
+                </property>
+               </widget>
               </item>
              </layout>
             </widget>
            </item>
            <item row="0" column="1">
             <widget class="QWidget" name="widget_8" native="true">
+             <property name="styleSheet">
+              <string notr="true"/>
+             </property>
              <layout class="QGridLayout" name="gridLayout_16">
               <item row="0" column="0">
                <widget class="QComboBox" name="comboBox_3"/>
@@ -553,6 +580,10 @@
            </item>
            <item row="1" column="0" colspan="2">
             <widget class="QWidget" name="widget_15" native="true">
+             <property name="styleSheet">
+              <string notr="true">  border: 2px solid rgb(25, 0, 108);
+  border-radius: 10px;</string>
+             </property>
              <layout class="QGridLayout" name="gridLayout_20">
               <item row="0" column="0" alignment="Qt::AlignTop">
                <widget class="QLabel" name="label_14">
@@ -561,19 +592,30 @@
                   <pointsize>14</pointsize>
                  </font>
                 </property>
+                <property name="styleSheet">
+                 <string notr="true">border:0px</string>
+                </property>
                 <property name="text">
                  <string>Phase Response</string>
                 </property>
                </widget>
               </item>
               <item row="1" column="0">
-               <widget class="QWidget" name="widget_16" native="true"/>
+               <widget class="QWidget" name="widget_16" native="true">
+                <property name="styleSheet">
+                 <string notr="true">border:0px</string>
+                </property>
+               </widget>
               </item>
              </layout>
             </widget>
            </item>
            <item row="2" column="0" colspan="2">
             <widget class="QWidget" name="widget_13" native="true">
+             <property name="styleSheet">
+              <string notr="true">  border: 2px solid rgb(25, 0, 108);
+  border-radius: 10px;</string>
+             </property>
              <layout class="QGridLayout" name="gridLayout_19">
               <item row="0" column="0" alignment="Qt::AlignTop">
                <widget class="QLabel" name="label_13">
@@ -582,13 +624,20 @@
                   <pointsize>14</pointsize>
                  </font>
                 </property>
+                <property name="styleSheet">
+                 <string notr="true">border:0px</string>
+                </property>
                 <property name="text">
                  <string>Corrected Phase</string>
                 </property>
                </widget>
               </item>
               <item row="1" column="0">
-               <widget class="QWidget" name="widget_14" native="true"/>
+               <widget class="QWidget" name="widget_14" native="true">
+                <property name="styleSheet">
+                 <string notr="true">border:0px</string>
+                </property>
+               </widget>
               </item>
              </layout>
             </widget>
@@ -597,8 +646,12 @@
          </widget>
          <widget class="QWidget" name="page_7">
           <layout class="QGridLayout" name="gridLayout_27">
-           <item row="0" column="0">
+           <item row="0" column="0" alignment="Qt::AlignTop">
             <widget class="QFrame" name="frame_5">
+             <property name="styleSheet">
+              <string notr="true">  border: 2px solid rgb(25, 0, 108);
+  border-radius: 10px;</string>
+             </property>
              <property name="frameShape">
               <enum>QFrame::StyledPanel</enum>
              </property>
@@ -613,6 +666,9 @@
                   <pointsize>14</pointsize>
                  </font>
                 </property>
+                <property name="styleSheet">
+                 <string notr="true">border:0px</string>
+                </property>
                 <property name="text">
                  <string>Touch Pad</string>
                 </property>
@@ -625,17 +681,23 @@
                   <pointsize>14</pointsize>
                  </font>
                 </property>
+                <property name="styleSheet">
+                 <string notr="true">border:0px</string>
+                </property>
                 <property name="text">
                  <string>Load</string>
                 </property>
                </widget>
               </item>
-              <item row="0" column="0">
+              <item row="0" column="0" alignment="Qt::AlignTop">
                <widget class="QRadioButton" name="radioButton_3">
                 <property name="font">
                  <font>
                   <pointsize>14</pointsize>
                  </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">border:0px</string>
                 </property>
                 <property name="text">
                  <string>Load Signal</string>
@@ -648,12 +710,19 @@
            <item row="1" column="0">
             <widget class="QWidget" name="widget" native="true">
              <property name="styleSheet">
-              <string notr="true">border: 2px solid  Blue
+              <string notr="true">
+  border: 2px solid rgb(25, 0, 108);
+  border-radius: 10px; /* Adjust the value to achieve the desired curvature */
 </string>
              </property>
              <layout class="QGridLayout" name="gridLayout_23">
               <item row="0" column="0" alignment="Qt::AlignTop">
                <widget class="QLabel" name="label_15">
+                <property name="font">
+                 <font>
+                  <pointsize>12</pointsize>
+                 </font>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">border:0px
 </string>
@@ -676,9 +745,16 @@
            </item>
            <item row="2" column="0">
             <widget class="QWidget" name="widget_19" native="true">
+             <property name="styleSheet">
+              <string notr="true">  border: 2px solid rgb(25, 0, 108);
+  border-radius: 10px;</string>
+             </property>
              <layout class="QGridLayout" name="gridLayout_25">
               <item row="2" column="0" alignment="Qt::AlignBottom">
                <widget class="QWidget" name="widget_20" native="true">
+                <property name="styleSheet">
+                 <string notr="true">border:0px</string>
+                </property>
                 <layout class="QGridLayout" name="gridLayout_26">
                  <item row="0" column="0">
                   <widget class="QSlider" name="horizontalSlider">
@@ -698,10 +774,22 @@
                </widget>
               </item>
               <item row="1" column="0">
-               <widget class="QWidget" name="widget_21" native="true"/>
+               <widget class="QWidget" name="widget_21" native="true">
+                <property name="styleSheet">
+                 <string notr="true">border:0px</string>
+                </property>
+               </widget>
               </item>
               <item row="0" column="0" alignment="Qt::AlignTop">
                <widget class="QLabel" name="label_17">
+                <property name="font">
+                 <font>
+                  <pointsize>12</pointsize>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">border:0px</string>
+                </property>
                 <property name="text">
                  <string>Filtered Signal</string>
                 </property>
@@ -712,16 +800,19 @@
            </item>
            <item row="3" column="0">
             <widget class="QWidget" name="widget_17" native="true">
+             <property name="styleSheet">
+              <string notr="true"/>
+             </property>
              <layout class="QGridLayout" name="gridLayout_22">
               <item row="0" column="0">
                <widget class="QLabel" name="label_18">
                 <property name="styleSheet">
-                 <string notr="true">
+                 <string notr="true">border:0px;
 background-color: rgb(203, 197, 193);
-border-radius: 10%</string>
+border-radius: 10%;</string>
                 </property>
                 <property name="text">
-                 <string>TextLabel</string>
+                 <string/>
                 </property>
                </widget>
               </item>
@@ -739,7 +830,7 @@ border-radius: 10%</string>
      <widget class="QWidget" name="icon_only" native="true">
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <property name="spacing">
-        <number>10</number>
+        <number>5</number>
        </property>
        <property name="leftMargin">
         <number>0</number>
@@ -754,33 +845,31 @@ border-radius: 10%</string>
         <number>0</number>
        </property>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <item>
-          <widget class="QLabel" name="label">
-           <property name="minimumSize">
-            <size>
-             <width>40</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>40</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="pixmap">
-            <pixmap>../../Task 3/Signal-Equalizer/Icons/launchpad.png</pixmap>
-           </property>
-           <property name="scaledContents">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <layout class="QHBoxLayout" name="horizontalLayout_2"/>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_9">
+         <property name="styleSheet">
+          <string notr="true">background-color:white</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../../Task 3/Signal-Equalizer/resource.qrc">
+           <normaloff>:/icon/Icons/launchpad.png</normaloff>
+           <normalon>:/icon/Icons/launchpad.png</normalon>:/icon/Icons/launchpad.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>35</width>
+           <height>35</height>
+          </size>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
        </item>
        <item>
         <layout class="QVBoxLayout" name="verticalLayout">
@@ -911,7 +1000,7 @@ border-radius: 10%</string>
     </hint>
     <hint type="destinationlabel">
      <x>73</x>
-     <y>59</y>
+     <y>71</y>
     </hint>
    </hints>
   </connection>
@@ -927,7 +1016,7 @@ border-radius: 10%</string>
     </hint>
     <hint type="destinationlabel">
      <x>64</x>
-     <y>119</y>
+     <y>131</y>
     </hint>
    </hints>
   </connection>
@@ -955,7 +1044,7 @@ border-radius: 10%</string>
    <hints>
     <hint type="sourcelabel">
      <x>73</x>
-     <y>90</y>
+     <y>102</y>
     </hint>
     <hint type="destinationlabel">
      <x>42</x>
@@ -971,7 +1060,7 @@ border-radius: 10%</string>
    <hints>
     <hint type="sourcelabel">
      <x>84</x>
-     <y>122</y>
+     <y>134</y>
     </hint>
     <hint type="destinationlabel">
      <x>45</x>
@@ -991,7 +1080,7 @@ border-radius: 10%</string>
     </hint>
     <hint type="destinationlabel">
      <x>64</x>
-     <y>89</y>
+     <y>101</y>
     </hint>
    </hints>
   </connection>
@@ -1003,7 +1092,7 @@ border-radius: 10%</string>
    <hints>
     <hint type="sourcelabel">
      <x>165</x>
-     <y>781</y>
+     <y>815</y>
     </hint>
     <hint type="destinationlabel">
      <x>159</x>
@@ -1018,12 +1107,28 @@ border-radius: 10%</string>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>42</x>
-     <y>781</y>
+     <x>50</x>
+     <y>815</y>
     </hint>
     <hint type="destinationlabel">
      <x>45</x>
      <y>734</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_9</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>full_menu</receiver>
+   <slot>setHidden(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>31</x>
+     <y>34</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>81</x>
+     <y>229</y>
     </hint>
    </hints>
   </connection>
