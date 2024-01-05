@@ -104,7 +104,7 @@ class MyWindow(QMainWindow):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_plot)
         self.timer.start(100)
-        default_values = ["1+0j", "0.5+0.5j", "0.7071+0.7071j"]
+        default_values = ["1-2j", "0.5+0.5j", "0.7071+0.7071j"]
         self.ui.comboBox_3.addItems(default_values)
 
     def stackedWidget_currentChanged (self, index):
@@ -232,25 +232,34 @@ class MyWindow(QMainWindow):
         y = np.sin(theta)
         unit_circle_item.setData(x=x, y=y, pen=pg.mkPen('g'))
         self.ui.plotWidget4.addItem(unit_circle_item)
+        self.add_zerosPoles_fromallpass(z,p)
 
         for zero in z:
-            self.ui.plotWidget4.plot([np.real(zero)], [np.imag(zero)], pen=None, symbol='o', symbolBrush='r')
+            self.ui.plotWidget4.plot([np.real(zero)], [np.imag(zero)], pen=None, symbol='o', symbolBrush='r') #######
 
         for pole in p:
             self.ui.plotWidget4.plot([np.real(pole)], [np.imag(pole)], pen=None, symbol='x', symbolBrush='b')
 
         self.ui.plotWidget4.setTitle('Zeros and Poles on Unit Circle')
         self.ui.plotWidget4.showGrid(x=True, y=True)
-
-        # Plot phase response
         w, h = signal.freqz([-a, 1.0], [1.0, -a])
+        self.plot_Phase_allpass(w,h,1)
+    def plot_Phase_allpass(self,w,h,key):
+        # Plot phase response
         phase_response = np.unwrap(np.angle(h))
-        self.ui.plotWidget5.plot(w, phase_response, pen=pg.mkPen('b'))
-        self.ui.plotWidget5.setTitle('Phase Response')
-        self.ui.plotWidget5.setLabel('bottom', 'Frequency [Hz]')
-        self.ui.plotWidget5.setLabel('left', 'Phase [radians]')
-        self.ui.plotWidget5.showGrid(x=True, y=True)
-
+        if key==1:
+            self.ui.plotWidget5.plot(w, phase_response, pen=pg.mkPen('b'))
+            self.ui.plotWidget5.setTitle('Phase Response')
+            self.ui.plotWidget5.setLabel('bottom', 'Frequency [Hz]')
+            self.ui.plotWidget5.setLabel('left', 'Phase [radians]')
+            self.ui.plotWidget5.showGrid(x=True, y=True)
+        else:
+            
+            self.ui.plotWidget6.plot(w, phase_response, pen=pg.mkPen('b'))
+            self.ui.plotWidget6.setTitle('Phase Response')
+            self.ui.plotWidget6.setLabel('bottom', 'Frequency [Hz]')
+            self.ui.plotWidget6.setLabel('left', 'Phase [radians]')
+            self.ui.plotWidget6.showGrid(x=True, y=True)
     def add_value_to_combo(self):
       
         new_value = self.ui.lineEdit.text()
@@ -258,3 +267,7 @@ class MyWindow(QMainWindow):
             if new_value not in [self.ui.comboBox_3.itemText(i) for i in range(self.ui.comboBox_3.count())]:
                 self.ui.comboBox_3.addItem(new_value)
 
+    def add_zerosPoles_fromallpass(self,z,p):
+        #this function should take zeros and poles of all pass filter and add them to created filter
+        #also we should call plot_phase_allpass function to plot corrected phase with key !=1
+        pass
