@@ -205,7 +205,7 @@
           </size>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="page_8">
           <layout class="QGridLayout" name="gridLayout">
@@ -258,27 +258,27 @@
        <item row="1" column="0">
         <widget class="QStackedWidget" name="stackedWidget_4">
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="page_11">
           <layout class="QGridLayout" name="gridLayout_5">
-           <item row="1" column="1">
-            <widget class="QWidget" name="widget_6" native="true">
-             <layout class="QGridLayout" name="gridLayout_9">
+           <item row="1" column="0">
+            <widget class="QWidget" name="widget_5" native="true">
+             <layout class="QGridLayout" name="gridLayout_8">
               <item row="0" column="0" alignment="Qt::AlignTop">
-               <widget class="QLabel" name="label_7">
+               <widget class="QLabel" name="label_6">
                 <property name="font">
                  <font>
                   <pointsize>14</pointsize>
                  </font>
                 </property>
                 <property name="text">
-                 <string>Phase Response</string>
+                 <string>Magnitude Response</string>
                 </property>
                </widget>
               </item>
               <item row="1" column="0">
-               <widget class="QWidget" name="widget_10" native="true"/>
+               <widget class="QWidget" name="widget_9" native="true"/>
               </item>
              </layout>
             </widget>
@@ -346,69 +346,6 @@
              </layout>
             </widget>
            </item>
-           <item row="2" column="0">
-            <widget class="QWidget" name="widget_7" native="true">
-             <layout class="QGridLayout" name="gridLayout_10">
-              <item row="0" column="0" alignment="Qt::AlignTop">
-               <widget class="QLabel" name="label_8">
-                <property name="font">
-                 <font>
-                  <pointsize>14</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Corrected Phase</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QWidget" name="widget_12" native="true"/>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QWidget" name="widget_2" native="true">
-             <layout class="QGridLayout" name="gridLayout_6">
-              <item row="0" column="0" alignment="Qt::AlignTop">
-               <widget class="QLabel" name="label_5">
-                <property name="font">
-                 <font>
-                  <pointsize>14</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Z-Pole</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QWidget" name="widget_11" native="true"/>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QWidget" name="widget_5" native="true">
-             <layout class="QGridLayout" name="gridLayout_8">
-              <item row="0" column="0" alignment="Qt::AlignTop">
-               <widget class="QLabel" name="label_6">
-                <property name="font">
-                 <font>
-                  <pointsize>14</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Magnitude Response</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QWidget" name="widget_9" native="true"/>
-              </item>
-             </layout>
-            </widget>
-           </item>
            <item row="2" column="1">
             <widget class="QWidget" name="widget_8" native="true">
              <layout class="QGridLayout" name="gridLayout_13">
@@ -470,10 +407,109 @@
              </layout>
             </widget>
            </item>
+           <item row="1" column="1">
+            <widget class="QWidget" name="widget_6" native="true">
+             <layout class="QGridLayout" name="gridLayout_9">
+              <item row="0" column="0" alignment="Qt::AlignTop">
+               <widget class="QLabel" name="label_7">
+                <property name="font">
+                 <font>
+                  <pointsize>14</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Phase Response</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QWidget" name="widget_10" native="true"/>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QWidget" name="widget_7" native="true">
+             <layout class="QGridLayout" name="gridLayout_10">
+              <item row="0" column="0" alignment="Qt::AlignTop">
+               <widget class="QLabel" name="label_8">
+                <property name="font">
+                 <font>
+                  <pointsize>14</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Corrected Phase</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QWidget" name="widget_12" native="true"/>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QWidget" name="widget_2" native="true">
+             <layout class="QGridLayout" name="gridLayout_6">
+              <item row="0" column="0" alignment="Qt::AlignTop">
+               <widget class="QLabel" name="label_5">
+                <property name="font">
+                 <font>
+                  <pointsize>14</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Z-Pole</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QWidget" name="widget_11" native="true"/>
+              </item>
+             </layout>
+            </widget>
+           </item>
           </layout>
          </widget>
          <widget class="QWidget" name="page_12">
           <layout class="QGridLayout" name="gridLayout_20">
+           <item row="2" column="0">
+            <widget class="QWidget" name="widget_13" native="true">
+             <layout class="QGridLayout" name="gridLayout_16">
+              <item row="2" column="0" alignment="Qt::AlignBottom">
+               <widget class="QWidget" name="widget_15" native="true">
+                <layout class="QGridLayout" name="gridLayout_15">
+                 <item row="0" column="0">
+                  <widget class="QSlider" name="horizontalSlider">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QLabel" name="label_10">
+                   <property name="text">
+                    <string>TextLabel</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QWidget" name="widget_14" native="true"/>
+              </item>
+              <item row="0" column="0" alignment="Qt::AlignTop">
+               <widget class="QLabel" name="label_11">
+                <property name="text">
+                 <string>Filtered Signal</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
            <item row="0" column="0" alignment="Qt::AlignTop">
             <widget class="QFrame" name="frame_3">
              <property name="frameShape">
@@ -534,42 +570,6 @@
               </item>
               <item row="1" column="0">
                <widget class="QWidget" name="widget_17" native="true"/>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QWidget" name="widget_13" native="true">
-             <layout class="QGridLayout" name="gridLayout_16">
-              <item row="2" column="0" alignment="Qt::AlignBottom">
-               <widget class="QWidget" name="widget_15" native="true">
-                <layout class="QGridLayout" name="gridLayout_15">
-                 <item row="0" column="0">
-                  <widget class="QSlider" name="horizontalSlider">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="1">
-                  <widget class="QLabel" name="label_10">
-                   <property name="text">
-                    <string>TextLabel</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QWidget" name="widget_14" native="true"/>
-              </item>
-              <item row="0" column="0" alignment="Qt::AlignTop">
-               <widget class="QLabel" name="label_11">
-                <property name="text">
-                 <string>Filtered Signal</string>
-                </property>
-               </widget>
               </item>
              </layout>
             </widget>
