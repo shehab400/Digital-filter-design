@@ -26,7 +26,7 @@ from scipy import signal
 #             self.progress.emit(i)
 #         self.completed.emit(i)
 
-
+PlotLine1 = []
 class Signal:
     def __init__(self):
         self.time_values = []
@@ -34,6 +34,12 @@ class Signal:
 
     def add_point(self, y):
         self.y_values.append(y)
+
+class PlotLine:
+    def __init__(self):
+        self.data = None
+        self.dataX = None
+        self.dataY = None
 
 
 class MyWindow(QMainWindow):
@@ -165,29 +171,51 @@ class MyWindow(QMainWindow):
                             p = line.split()
                             x.append(float(p[0]))
                             y.append(float(p[1]))
-                    # newplot = PlotLine()
-                    # newplot.data = pd.DataFrame({"time": x, "amplitude": y})
+                    newplot = PlotLine()
+                    newplot.data = pd.DataFrame({"time": x, "amplitude": y})
+                    PlotLine1.append(newplot)
                     self.plotWidget7.clear()
                     pen = pg.mkPen(color=self.random_color())
                     name = "Signal 1"
-                    self.plotWidget7.plot(x,y,pen = pen)
-                    self.plotWidget7.setLimits(xMin = 0 ,xMax = x.max())
+                    self.plotWidget7.plot(newplot.data["time"],newplot.data["amplitude"],pen = pen)
+                    self.plotWidget7.setLimits(xMin = 0 ,xMax = newplot.data["time"].max())
                     # self.plotWidget7.setXRange(0,0.1,padding=0)
+                    self.timer2 = QtCore.QTimer()
+                    self.timer2.setInterval(int(50))
+                    self.timer2.timeout.connect(
+                        self.UpdatePlots
+                    )  # Connect to a single update method
+                    self.timer2.start()
+                    
             elif path.endswith(".csv"):
-                    data = pd.read_csv(path, usecols=["time", "amplitude"])
+                    newplot = PlotLine()
+                    newplot.data = pd.read_csv(path, usecols=["time", "amplitude"])
+                    PlotLine1.append(newplot)
                     name = "Signal 1"
                     self.plotWidget7.clear()
                     pen = pg.mkPen(color=self.random_color())
-                    self.plotWidget7.plot(data["time"],data["amplitude"],pen=pen)
-                    # self.plotWidget7.setXRange(0,10,padding=0)
-                    self.plotWidget7.setLimits(xMin = 0 ,xMax = data["time"].max())
+                    self.plotWidget7.plot(newplot.data["time"],newplot.data["amplitude"],pen=pen)
+                    self.plotWidget7.setXRange(0,10,padding=0)
+                    # self.plotWidget7.setLimits(xMin = 0 ,xMax = newplot.data["time"].max())
+                    self.timer2 = QtCore.QTimer()
+                    self.timer2.setInterval(int(50))
+                    self.timer2.timeout.connect(
+                        self.UpdatePlots
+                    )  # Connect to a single update method
+                    self.timer2.start()
         else:
             self.ErrorMsg("Load Signal is NOT checked")
 
     def UpdatePlots(self):
+
         xmin=self.plotWidget7.getViewBox().viewRange()[0][0]
         xmax=self.plotWidget7.getViewBox().viewRange()[0][1]
-        self.plotWidget7.setXRange(xmin+1,xmax+1,padding=0)
+        if xmax <= PlotLine1[-1].data["time"].max():
+            self.plotWidget7.setXRange(xmin+10,xmax+10,padding=0)
+        else:
+             self.timer.stop()
+
+        self.plotWidget7.setLimits(xMin = 0 ,xMax = PlotLine1[-1].data["time"].max())
 
     def plot_signal(self, y_values):
         self.plotWidget7.clear()
@@ -208,6 +236,9 @@ class MyWindow(QMainWindow):
             # Plot the signal with interpolation for smoother curve
             if len(self.signal.y_values) >= 2:
                 self.plotWidget7.plot(self.signal.y_values)
+                self.filteredGraph()
+
+
     def update_plot_Allpass(self):
         selected_text = self.ui.comboBox_3.currentText()
     
@@ -218,6 +249,15 @@ class MyWindow(QMainWindow):
             a = complex(selected_text)
         self.represent_allpass(a)
        
+
+    def filteredGraph(self):
+        if self.ui.radioButton_3.isChecked():
+            YData = PlotLine1[-1].data["amplitude"]
+            filteredgraph = signal.lfilter(YData)
+        elif self.ui.radioButton_4.isChecked():
+            filteredgraph = signal.lfilter(self.signal.y_values)
+            #plot
+
 
     def represent_allpass(self, a):
         # Get zero and pole of all-pass
