@@ -134,12 +134,12 @@
          <item>
           <widget class="QPushButton" name="music">
            <property name="text">
-            <string>Music</string>
+            <string>Allpass-Filter</string>
            </property>
            <property name="icon">
-            <iconset>
-             <normaloff>../../Task 3/Signal-Equalizer/Icons/musical-note.png</normaloff>
-             <normalon>../../Task 3/Signal-Equalizer/Icons/musical-note.png</normalon>../../Task 3/Signal-Equalizer/Icons/musical-note.png</iconset>
+            <iconset resource="../../Task 3/Signal-Equalizer/resource.qrc">
+             <normaloff>:/icon/Icons/wave.png</normaloff>
+             <normalon>../../Task 3/Signal-Equalizer/Icons/wave.png</normalon>:/icon/Icons/wave.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -158,12 +158,12 @@
          <item>
           <widget class="QPushButton" name="animals">
            <property name="text">
-            <string>Animals</string>
+            <string>Output</string>
            </property>
            <property name="icon">
-            <iconset>
-             <normaloff>../../Task 3/Signal-Equalizer/Icons/lion.png</normaloff>
-             <normalon>../../Task 3/Signal-Equalizer/Icons/lion.png</normalon>../../Task 3/Signal-Equalizer/Icons/lion.png</iconset>
+            <iconset resource="../../Task 3/Signal-Equalizer/resource.qrc">
+             <normaloff>:/icon/Icons/wave.png</normaloff>
+             <normalon>../../Task 3/Signal-Equalizer/Icons/wave.png</normalon>:/icon/Icons/wave.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -707,42 +707,6 @@
              </layout>
             </widget>
            </item>
-           <item row="1" column="0">
-            <widget class="QWidget" name="widget" native="true">
-             <property name="styleSheet">
-              <string notr="true">
-  border: 2px solid rgb(25, 0, 108);
-  border-radius: 10px; /* Adjust the value to achieve the desired curvature */
-</string>
-             </property>
-             <layout class="QGridLayout" name="gridLayout_23">
-              <item row="0" column="0" alignment="Qt::AlignTop">
-               <widget class="QLabel" name="label_15">
-                <property name="font">
-                 <font>
-                  <pointsize>12</pointsize>
-                 </font>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">border:0px
-</string>
-                </property>
-                <property name="text">
-                 <string>Input Signal</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QWidget" name="widget_18" native="true">
-                <property name="styleSheet">
-                 <string notr="true">border:0px
-</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
            <item row="2" column="0">
             <widget class="QWidget" name="widget_19" native="true">
              <property name="styleSheet">
@@ -792,6 +756,42 @@
                 </property>
                 <property name="text">
                  <string>Filtered Signal</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QWidget" name="widget" native="true">
+             <property name="styleSheet">
+              <string notr="true">
+  border: 2px solid rgb(25, 0, 108);
+  border-radius: 10px; /* Adjust the value to achieve the desired curvature */
+</string>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_23">
+              <item row="0" column="0" alignment="Qt::AlignTop">
+               <widget class="QLabel" name="label_15">
+                <property name="font">
+                 <font>
+                  <pointsize>12</pointsize>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">border:0px
+</string>
+                </property>
+                <property name="text">
+                 <string>Input Signal</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QWidget" name="widget_18" native="true">
+                <property name="styleSheet">
+                 <string notr="true">border:0px
+</string>
                 </property>
                </widget>
               </item>
@@ -856,9 +856,9 @@ border-radius: 10%;</string>
           <string/>
          </property>
          <property name="icon">
-          <iconset resource="../../Task 3/Signal-Equalizer/resource.qrc">
-           <normaloff>:/icon/Icons/launchpad.png</normaloff>
-           <normalon>:/icon/Icons/launchpad.png</normalon>:/icon/Icons/launchpad.png</iconset>
+          <iconset>
+           <normaloff>../../Task 3/Signal-Equalizer/Icons/launchpad.png</normaloff>
+           <normalon>../../Task 3/Signal-Equalizer/Icons/launchpad.png</normalon>../../Task 3/Signal-Equalizer/Icons/launchpad.png</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -868,6 +868,9 @@ border-radius: 10%;</string>
          </property>
          <property name="checkable">
           <bool>true</bool>
+         </property>
+         <property name="autoExclusive">
+          <bool>false</bool>
          </property>
         </widget>
        </item>
@@ -907,8 +910,8 @@ border-radius: 10%;</string>
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../../Task 3/Signal-Equalizer/Icons/musical-note.png</normaloff>
-             <normalon>../../Task 3/Signal-Equalizer/Icons/musical-note.png</normalon>../../Task 3/Signal-Equalizer/Icons/musical-note.png</iconset>
+             <normaloff>../../Task 3/Signal-Equalizer/Icons/wave.png</normaloff>
+             <normalon>:/icon/Icons/wave.png</normalon>../../Task 3/Signal-Equalizer/Icons/wave.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -931,8 +934,8 @@ border-radius: 10%;</string>
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../../Task 3/Signal-Equalizer/Icons/lion.png</normaloff>
-             <normalon>../../Task 3/Signal-Equalizer/Icons/lion.png</normalon>../../Task 3/Signal-Equalizer/Icons/lion.png</iconset>
+             <normaloff>../../Task 3/Signal-Equalizer/Icons/wave.png</normaloff>
+             <normalon>../../Task 3/Signal-Equalizer/Icons/wave.png</normalon>../../Task 3/Signal-Equalizer/Icons/wave.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -941,6 +944,9 @@ border-radius: 10%;</string>
             </size>
            </property>
            <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="autoExclusive">
             <bool>true</bool>
            </property>
           </widget>
