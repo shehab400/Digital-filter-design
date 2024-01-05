@@ -806,12 +806,6 @@
              <layout class="QGridLayout" name="gridLayout_22">
               <item row="0" column="0">
                <widget class="QLabel" name="label_18">
-                <property name="minimumSize">
-                 <size>
-                  <width>930</width>
-                  <height>156</height>
-                 </size>
-                </property>
                 <property name="styleSheet">
                  <string notr="true">border:0px;
 background-color: rgb(203, 197, 193);
