@@ -11,6 +11,7 @@ import pandas as pd
 import time
 import numpy as np
 from scipy.interpolate import interp1d
+from scipy import signal
 # class Worker(QObject):
 #     progress = Signal(int)
 #     completed = Signal(int)
@@ -48,6 +49,8 @@ class MyWindow(QMainWindow):
         self.ui.music2.clicked.connect(self.allpassFilter)
         self.ui.animals2.clicked.connect(self.output)
         self.ui.pushButton_8.clicked.connect(self.load)
+        self.ui.pushButton_7.clicked.connect(self.update_plot_Allpass)
+        self.ui.pushButton_5.clicked.connect(self.add_value_to_combo)
         ## Change Qpushbutton Checkable status when stackedWidget index changed
         self.ui.radioButton_3.setChecked(True)
         # self.worker = Worker()
@@ -56,6 +59,7 @@ class MyWindow(QMainWindow):
         self.touchPad.setScene(self.scene)
         # self.worker.progress.connect(self.UpdatePlots)
         # self.work_requested.connect(self.worker.do_work)
+        
 
         self.plotWidget1 = pg.PlotWidget()
         self.plotWidget2 = pg.PlotWidget()
@@ -91,7 +95,7 @@ class MyWindow(QMainWindow):
         layout8.addWidget(self.plotWidget8 )
         self.ui.widget_21.setLayout(layout8)
 
-
+        self.plotWidget4.setAspectLocked(True)
         # Signal object
         self.signal = Signal()
 
@@ -100,6 +104,8 @@ class MyWindow(QMainWindow):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_plot)
         self.timer.start(100)
+        default_values = ["1+0j", "0.5+0.5j", "0.7071+0.7071j"]
+        self.ui.comboBox_3.addItems(default_values)
 
     def stackedWidget_currentChanged (self, index):
         btn_list = self.ui.icon_only.findChild(QPushButton) \
@@ -202,4 +208,53 @@ class MyWindow(QMainWindow):
             # Plot the signal with interpolation for smoother curve
             if len(self.signal.y_values) >= 2:
                 self.plotWidget7.plot(self.signal.y_values)
+    def update_plot_Allpass(self):
+        selected_text = self.ui.comboBox_3.currentText()
+    
+        if self.ui.lineEdit.text():
+            a = complex(self.ui.lineEdit.text())
+        else:
+            #
+            a = complex(selected_text)
+        self.represent_allpass(a)
+       
+
+    def represent_allpass(self, a):
+        # Get zero and pole of all-pass
+        z, p, k = signal.tf2zpk([-a, 1.0], [1.0, -a])
+
+        self.ui.plotWidget5.clear()
+        self.ui.plotWidget4.clear()
+
+        unit_circle_item = pg.PlotDataItem()
+        theta = np.linspace(0, 2 * np.pi, 100)
+        x = np.cos(theta)
+        y = np.sin(theta)
+        unit_circle_item.setData(x=x, y=y, pen=pg.mkPen('g'))
+        self.ui.plotWidget4.addItem(unit_circle_item)
+
+        for zero in z:
+            self.ui.plotWidget4.plot([np.real(zero)], [np.imag(zero)], pen=None, symbol='o', symbolBrush='r')
+
+        for pole in p:
+            self.ui.plotWidget4.plot([np.real(pole)], [np.imag(pole)], pen=None, symbol='x', symbolBrush='b')
+
+        self.ui.plotWidget4.setTitle('Zeros and Poles on Unit Circle')
+        self.ui.plotWidget4.showGrid(x=True, y=True)
+
+        # Plot phase response
+        w, h = signal.freqz([-a, 1.0], [1.0, -a])
+        phase_response = np.unwrap(np.angle(h))
+        self.ui.plotWidget5.plot(w, phase_response, pen=pg.mkPen('b'))
+        self.ui.plotWidget5.setTitle('Phase Response')
+        self.ui.plotWidget5.setLabel('bottom', 'Frequency [Hz]')
+        self.ui.plotWidget5.setLabel('left', 'Phase [radians]')
+        self.ui.plotWidget5.showGrid(x=True, y=True)
+
+    def add_value_to_combo(self):
+      
+        new_value = self.ui.lineEdit.text()
+        if new_value:
+            if new_value not in [self.ui.comboBox_3.itemText(i) for i in range(self.ui.comboBox_3.count())]:
+                self.ui.comboBox_3.addItem(new_value)
 
