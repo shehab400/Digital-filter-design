@@ -542,7 +542,7 @@
                  <item row="0" column="1">
                   <widget class="QPushButton" name="pushButton_5">
                    <property name="text">
-                    <string>Load</string>
+                    <string>PushButton</string>
                    </property>
                   </widget>
                  </item>
@@ -649,7 +649,8 @@
            <item row="0" column="0" alignment="Qt::AlignTop">
             <widget class="QFrame" name="frame_5">
              <property name="styleSheet">
-              <string notr="true"/>
+              <string notr="true">  border: 2px solid rgb(25, 0, 108);
+  border-radius: 10px;</string>
              </property>
              <property name="frameShape">
               <enum>QFrame::StyledPanel</enum>
@@ -681,7 +682,7 @@
                  </font>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true"/>
+                 <string notr="true">border:0px</string>
                 </property>
                 <property name="text">
                  <string>Load</string>
@@ -803,17 +804,21 @@
               <string notr="true"/>
              </property>
              <layout class="QGridLayout" name="gridLayout_22">
-              <item row="0" column="0" alignment="Qt::AlignBottom">
-               <widget class="QGraphicsView" name="touchPad">
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_18">
                 <property name="minimumSize">
                  <size>
                   <width>930</width>
-                  <height>192</height>
+                  <height>156</height>
                  </size>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">background-color: rgb(166, 166, 203);
-</string>
+                 <string notr="true">border:0px;
+background-color: rgb(203, 197, 193);
+border-radius: 10%;</string>
+                </property>
+                <property name="text">
+                 <string/>
                 </property>
                </widget>
               </item>
