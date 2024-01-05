@@ -48,10 +48,10 @@ class MyWindow(QMainWindow):
         self.ui.widget_14.setLayout(layout6)
         layout7=QVBoxLayout()
         layout7.addWidget(self.plotWidget7 )
-        self.ui.widget_18.setLayout(layout6)
+        self.ui.widget_18.setLayout(layout7)
         layout8=QVBoxLayout()
         layout8.addWidget(self.plotWidget8 )
-        self.ui.widget_21.setLayout(layout6)
+        self.ui.widget_21.setLayout(layout8)
 
     def stackedWidget_currentChanged (self, index):
         btn_list = self.ui.icon_only.findChild(QPushButton) \
