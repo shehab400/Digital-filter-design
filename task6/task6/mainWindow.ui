@@ -21,7 +21,7 @@
     <item row="0" column="0">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="DesignPage">
        <layout class="QGridLayout" name="gridLayout_2">
@@ -347,7 +347,7 @@ background-color: #1c2973;
         <item row="0" column="0">
          <layout class="QHBoxLayout" name="horizontalLayout_21" stretch="1,1">
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_12" stretch="0,1,0,0,0,0,0,0">
+           <layout class="QVBoxLayout" name="verticalLayout_12" stretch="0,1,0,0,0,0,0,0,0">
             <property name="leftMargin">
              <number>20</number>
             </property>
@@ -411,21 +411,20 @@ font-weight:10000px;</string>
              </widget>
             </item>
             <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_23">
-              <item>
-               <widget class="QListWidget" name="AllPassFiltersList"/>
-              </item>
-             </layout>
+             <widget class="QLineEdit" name="InsertFilterText">
+              <property name="styleSheet">
+               <string notr="true">color:white;
+</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_23"/>
             </item>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_24">
               <item>
-               <widget class="QLineEdit" name="InsertFilterText">
-                <property name="styleSheet">
-                 <string notr="true">color:white;
-</string>
-                </property>
-               </widget>
+               <widget class="QComboBox" name="comboBox"/>
               </item>
               <item>
                <widget class="QPushButton" name="AddFilter">
@@ -453,6 +452,35 @@ background-color: #1c2973;
                 </property>
                 <property name="text">
                  <string>Add</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="Apply">
+                <property name="styleSheet">
+                 <string notr="true">QPushButton{
+  appearance: button;
+  border-radius: 6px;
+  border-width: 0;
+  box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset,rgba(50, 50, 93, .1) 0 2px 5px 0,rgba(0, 0, 0, .07) 0 1px 1px 0;
+color: rgb(255, 255, 255);
+background-color:rgb(22, 25, 76);
+  cursor: pointer;
+  font-family: -apple-system,system-ui,&quot;Segoe UI&quot;,Roboto,&quot;Helvetica Neue&quot;,Ubuntu,sans-serif;
+  height: 30px;
+  margin: 0 20px 0 20px;
+  position: center;
+  width:70px;
+}
+QPushButton:hover{
+background-color: #283999;
+}
+QPushButton:pressed{
+background-color: #1c2973;
+}</string>
+                </property>
+                <property name="text">
+                 <string>Apply</string>
                 </property>
                </widget>
               </item>
@@ -627,6 +655,29 @@ font-weight:10000px;</string>
               <enum>QFrame::Raised</enum>
              </property>
              <layout class="QGridLayout" name="gridLayout_3">
+              <item row="0" column="1">
+               <widget class="QSlider" name="horizontalSlider">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0" colspan="2">
+               <widget class="QRadioButton" name="Touchpadcheckbox">
+                <property name="font">
+                 <font>
+                  <pointsize>14</pointsize>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color:white;
+font-weight:10000px;</string>
+                </property>
+                <property name="text">
+                 <string>Touch Pad</string>
+                </property>
+               </widget>
+              </item>
               <item row="0" column="0">
                <widget class="QLabel" name="label_2">
                 <property name="font">
@@ -640,29 +691,6 @@ font-weight:10000px;</string>
                 </property>
                 <property name="text">
                  <string>FIlterSpeed</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QSlider" name="horizontalSlider">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0" colspan="2">
-               <widget class="QCheckBox" name="Touchpadcheckbox">
-                <property name="font">
-                 <font>
-                  <pointsize>14</pointsize>
-                 </font>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">color:white;
-font-weight:10000px;</string>
-                </property>
-                <property name="text">
-                 <string>Touch Pad</string>
                 </property>
                </widget>
               </item>
@@ -680,6 +708,10 @@ font-weight:10000px;</string>
                </widget>
               </item>
              </layout>
+             <zorder>label_2</zorder>
+             <zorder>horizontalSlider</zorder>
+             <zorder>Touchpad</zorder>
+             <zorder>Touchpadcheckbox</zorder>
             </widget>
            </item>
           </layout>
@@ -720,8 +752,8 @@ font-weight:10000px;</string>
     <property name="title">
      <string>Tab</string>
     </property>
-    <addaction name="actionDesign"/>
     <addaction name="actionAdjust_Phase"/>
+    <addaction name="actionDesign"/>
     <addaction name="actionApply"/>
    </widget>
    <widget class="QMenu" name="menuApply">
