@@ -229,19 +229,19 @@ class Ui_MainWindow(object):
 "")
         self.label.setObjectName("label")
         self.verticalLayout_12.addWidget(self.label)
-        self.horizontalLayout_23 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_23.setObjectName("horizontalLayout_23")
-        self.AllPassFiltersList = QtWidgets.QListWidget(self.CorrectPage)
-        self.AllPassFiltersList.setObjectName("AllPassFiltersList")
-        self.horizontalLayout_23.addWidget(self.AllPassFiltersList)
-        self.verticalLayout_12.addLayout(self.horizontalLayout_23)
-        self.horizontalLayout_24 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_24.setObjectName("horizontalLayout_24")
         self.InsertFilterText = QtWidgets.QLineEdit(self.CorrectPage)
         self.InsertFilterText.setStyleSheet("color:white;\n"
 "")
         self.InsertFilterText.setObjectName("InsertFilterText")
-        self.horizontalLayout_24.addWidget(self.InsertFilterText)
+        self.verticalLayout_12.addWidget(self.InsertFilterText)
+        self.horizontalLayout_23 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_23.setObjectName("horizontalLayout_23")
+        self.verticalLayout_12.addLayout(self.horizontalLayout_23)
+        self.horizontalLayout_24 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_24.setObjectName("horizontalLayout_24")
+        self.comboBox = QtWidgets.QComboBox(self.CorrectPage)
+        self.comboBox.setObjectName("comboBox")
+        self.horizontalLayout_24.addWidget(self.comboBox)
         self.AddFilter = QtWidgets.QPushButton(self.CorrectPage)
         self.AddFilter.setStyleSheet("QPushButton{\n"
 "  appearance: button;\n"
@@ -265,6 +265,29 @@ class Ui_MainWindow(object):
 "}")
         self.AddFilter.setObjectName("AddFilter")
         self.horizontalLayout_24.addWidget(self.AddFilter)
+        self.Apply = QtWidgets.QPushButton(self.CorrectPage)
+        self.Apply.setStyleSheet("QPushButton{\n"
+"  appearance: button;\n"
+"  border-radius: 6px;\n"
+"  border-width: 0;\n"
+"  box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset,rgba(50, 50, 93, .1) 0 2px 5px 0,rgba(0, 0, 0, .07) 0 1px 1px 0;\n"
+"color: rgb(255, 255, 255);\n"
+"background-color:rgb(22, 25, 76);\n"
+"  cursor: pointer;\n"
+"  font-family: -apple-system,system-ui,\"Segoe UI\",Roboto,\"Helvetica Neue\",Ubuntu,sans-serif;\n"
+"  height: 30px;\n"
+"  margin: 0 20px 0 20px;\n"
+"  position: center;\n"
+"  width:70px;\n"
+"}\n"
+"QPushButton:hover{\n"
+"background-color: #283999;\n"
+"}\n"
+"QPushButton:pressed{\n"
+"background-color: #1c2973;\n"
+"}")
+        self.Apply.setObjectName("Apply")
+        self.horizontalLayout_24.addWidget(self.Apply)
         self.verticalLayout_12.addLayout(self.horizontalLayout_24)
         spacerItem5 = QtWidgets.QSpacerItem(20, 80, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_12.addItem(spacerItem5)
@@ -354,6 +377,18 @@ class Ui_MainWindow(object):
         self.frame_3.setObjectName("frame_3")
         self.gridLayout_3 = QtWidgets.QGridLayout(self.frame_3)
         self.gridLayout_3.setObjectName("gridLayout_3")
+        self.horizontalSlider = QtWidgets.QSlider(self.frame_3)
+        self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
+        self.horizontalSlider.setObjectName("horizontalSlider")
+        self.gridLayout_3.addWidget(self.horizontalSlider, 0, 1, 1, 1)
+        self.Touchpadcheckbox = QtWidgets.QRadioButton(self.frame_3)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.Touchpadcheckbox.setFont(font)
+        self.Touchpadcheckbox.setStyleSheet("color:white;\n"
+"font-weight:10000px;")
+        self.Touchpadcheckbox.setObjectName("Touchpadcheckbox")
+        self.gridLayout_3.addWidget(self.Touchpadcheckbox, 1, 0, 1, 2)
         self.label_2 = QtWidgets.QLabel(self.frame_3)
         font = QtGui.QFont()
         font.setPointSize(11)
@@ -362,23 +397,15 @@ class Ui_MainWindow(object):
 "")
         self.label_2.setObjectName("label_2")
         self.gridLayout_3.addWidget(self.label_2, 0, 0, 1, 1)
-        self.horizontalSlider = QtWidgets.QSlider(self.frame_3)
-        self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
-        self.horizontalSlider.setObjectName("horizontalSlider")
-        self.gridLayout_3.addWidget(self.horizontalSlider, 0, 1, 1, 1)
-        self.Touchpadcheckbox = QtWidgets.QCheckBox(self.frame_3)
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        self.Touchpadcheckbox.setFont(font)
-        self.Touchpadcheckbox.setStyleSheet("color:white;\n"
-"font-weight:10000px;")
-        self.Touchpadcheckbox.setObjectName("Touchpadcheckbox")
-        self.gridLayout_3.addWidget(self.Touchpadcheckbox, 1, 0, 1, 2)
         self.Touchpad = QtWidgets.QGraphicsView(self.frame_3)
         self.Touchpad.setMaximumSize(QtCore.QSize(16777215, 300))
         self.Touchpad.setStyleSheet("background-color: rgb(0, 0, 0);")
         self.Touchpad.setObjectName("Touchpad")
         self.gridLayout_3.addWidget(self.Touchpad, 2, 0, 1, 2)
+        self.label_2.raise_()
+        self.horizontalSlider.raise_()
+        self.Touchpad.raise_()
+        self.Touchpadcheckbox.raise_()
         self.gridLayout_5.addWidget(self.frame_3, 1, 0, 1, 1)
         self.gridLayout_6.addWidget(self.frame, 0, 0, 1, 1)
         self.stackedWidget.addWidget(self.ApplyPage)
@@ -410,15 +437,15 @@ class Ui_MainWindow(object):
         self.actionApply = QtWidgets.QAction(MainWindow)
         self.actionApply.setObjectName("actionApply")
         self.menuDesign.addAction(self.actionOpen)
-        self.menuImplement.addAction(self.actionDesign)
         self.menuImplement.addAction(self.actionAdjust_Phase)
+        self.menuImplement.addAction(self.actionDesign)
         self.menuImplement.addAction(self.actionApply)
         self.menubar.addAction(self.menuDesign.menuAction())
         self.menubar.addAction(self.menuImplement.menuAction())
         self.menubar.addAction(self.menuApply.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -438,12 +465,13 @@ class Ui_MainWindow(object):
         self.label_24.setText(_translate("MainWindow", "Z_Plane Circle "))
         self.label.setText(_translate("MainWindow", "All Pass Filters"))
         self.AddFilter.setText(_translate("MainWindow", "Add"))
+        self.Apply.setText(_translate("MainWindow", "Apply"))
         self.label_25.setText(_translate("MainWindow", "Magnitude Response"))
         self.label_26.setText(_translate("MainWindow", "Phase Response"))
         self.label_23.setText(_translate("MainWindow", "Input"))
         self.label_22.setText(_translate("MainWindow", "Output"))
-        self.label_2.setText(_translate("MainWindow", "FIlterSpeed"))
         self.Touchpadcheckbox.setText(_translate("MainWindow", "Touch Pad"))
+        self.label_2.setText(_translate("MainWindow", "FIlterSpeed"))
         self.menuDesign.setTitle(_translate("MainWindow", "File"))
         self.menuImplement.setTitle(_translate("MainWindow", "Tab"))
         self.menuApply.setTitle(_translate("MainWindow", "Apply"))
@@ -452,13 +480,3 @@ class Ui_MainWindow(object):
         self.actionAdjust_Phase.setText(_translate("MainWindow", "Correct Phase"))
         self.actionApply.setText(_translate("MainWindow", "Apply"))
 from pyqtgraph import PlotWidget
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())
