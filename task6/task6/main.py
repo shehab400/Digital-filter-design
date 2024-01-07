@@ -80,12 +80,9 @@ class MainWindow(QMainWindow):
         # self.worker = Worker()
         self.scene = QGraphicsScene(self)
         self.ui.Touchpad.setScene(self.scene)
-        # self.worker.progress.connect(self.UpdatePlots)
-        # self.work_requested.connect(self.worker.do_work)
         self.ui.AllpassZplane.setAspectLocked(True)
         # Signal object
         self.signal = Signal()
-        self.speed = 1  # Default speed (1 point per second)
         # Connect mouse events
         self.ui.Touchpad.mouseMoveEvent = self.MouseMoving
         self.timer = QTimer(self)
@@ -96,13 +93,8 @@ class MainWindow(QMainWindow):
         self.ui.horizontalSlider.setMinimum(1)
         self.ui.horizontalSlider.setMaximum(1000)
         self.ui.horizontalSlider.setValue(0)
-        self.ui.horizontalSlider.valueChanged.connect(self.update_speed)
-        
-        # Start real-time filtering process automatically
-       # self.start_real_time_filtering()
-        #self.timer =QTimer()
-        #self.timer.timeout.connect(self.update_real_time_filtering)
-
+        self.label_3 = self.ui.label_3  # Change this line according to your actual label name
+        self.ui.horizontalSlider.valueChanged.connect(self.update_slider_value)
     def openPhaseAdjust(self):
          self.ui.stackedWidget.setCurrentIndex(1)
     def openApply(self):
@@ -247,45 +239,61 @@ class MainWindow(QMainWindow):
 
     def load(self):
         if self.ui.Touchpadcheckbox.isChecked() == False:
-            filename, _ = QtWidgets.QFileDialog.getOpenFileName()
+            filename = QtWidgets.QFileDialog.getOpenFileName()
             path = filename[0]
 
             if path.endswith(".txt"):
-                    with open(path, "r") as data:
-                        x = []
-                        y = []
-                        for line in data:
-                            p = line.split()
-                            x.append(float(p[0]))
-                            y.append(float(p[1]))
-                    newplot = PlotLine()
-                    newplot.data = pd.DataFrame({"time": x, "amplitude": y})
-                    LinePloting.append(newplot)
-                    self.ui.InputSignal.clear()
-                    pen = pg.mkPen(color=self.generate_random_color())
-                    self.ui.InputSignal.plot(newplot.data["time"],newplot.data["amplitude"],pen = pen)
-                    self.ui.InputSignal.setLimits(xMin = 0 ,xMax = newplot.data["time"].max())
-                    self.ui.InputSignal.setXRange(0,0.1,padding=0)
-                    if not self.timer.isActive():
-                        self.timer.timeout.connect(self.UpdatePlots)
-                        self.timer.start()
-                    
+                with open(path, "r") as data:
+                    x = []
+                    y = []
+                    for line in data:
+                        p = line.split()
+                        x.append(float(p[0]))
+                        y.append(float(p[1]))
+                newplot = PlotLine()
+                newplot.data = pd.DataFrame({"time": x, "amplitude": y})
+                LinePloting.append(newplot)
+                self.ui.InputSignal.clear()
+                pen = pg.mkPen(color=self.generate_random_color())
+                self.ui.InputSignal.plot(newplot.data["time"], newplot.data["amplitude"], pen=pen)
+                self.ui.InputSignal.setLimits(xMin=0, xMax=newplot.data["time"].max())
+                self.ui.InputSignal.setXRange(0, 0.1, padding=0)
+
+                # Plot the original signal in OutputFilteredSignal
+                self.ui.OutputFilteredSignal.clear()
+                self.ui.OutputFilteredSignal.plot(newplot.data["time"], newplot.data["amplitude"], pen=pg.mkPen('w'), name='Original Signal')
+
+                # Check if the slider value is greater than a threshold
+                threshold_value = self.ui.horizontalSlider.value()
+                if len(newplot.data["amplitude"]) >= threshold_value:
+                    # Filter the entire signal and plot the filtered signal
+                    self.filteredGraph()
+
             elif path.endswith(".csv"):
-                    newplot = PlotLine()
-                    newplot.data = pd.read_csv(path, usecols=["time", "amplitude"])
-                    LinePloting.append(newplot)
-                    self.ui.InputSignal.clear()
-                    pen = pg.mkPen(color=self.generate_random_color())
-                    self.ui.InputSignal.plot(newplot.data["time"],newplot.data["amplitude"],pen=pen)
-                    self.ui.InputSignal.setXRange(0,10,padding=0)
-                    # self.ui.InputSignal.setLimits(xMin = 0 ,xMax = newplot.data["time"].max())
-                    if not self.timer.isActive():
-                        self.timer.timeout.connect(self.UpdatePlots)
-                        self.timer.start()
-            else:
-                    self.show_error_message("Invalid file format. Please select a CSV file.")
+                newplot = PlotLine()
+                newplot.data = pd.read_csv(path, usecols=["time", "amplitude"])
+                LinePloting.append(newplot)
+                name = "Signal 1"
+                self.ui.InputSignal.clear()
+                pen = pg.mkPen(color=self.generate_random_color())
+                self.ui.InputSignal.plot(newplot.data["time"], newplot.data["amplitude"], pen=pen)
+                self.ui.InputSignal.setXRange(0, 10, padding=0)
+                
+                # Plot the original signal in OutputFilteredSignal
+                self.ui.OutputFilteredSignal.clear()
+                self.ui.OutputFilteredSignal.plot(newplot.data["time"], newplot.data["amplitude"], pen=pg.mkPen('w'), name='Original Signal')
+
+                # Check if the slider value is greater than a threshold
+                threshold_value = self.ui.horizontalSlider.value()
+                if len(newplot.data["amplitude"]) >= threshold_value:
+                    # Filter the entire signal and plot the filtered signal
+                    self.filteredGraph()
         else:
             self.ErrorMsg("Check the Check box")
+
+    def update_slider_value(self, value):
+        # Update the text of the QLabel with the current slider value
+        self.label_3.setText(f"Slider Value: {value}")
 
     def UpdatePlots(self):
 
@@ -320,7 +328,16 @@ class MainWindow(QMainWindow):
         if self.ui.Touchpadcheckbox.isChecked():
             # Plot the signal with interpolation for smoother curve
             if len(self.signal.y_values) >= 2:
-                self.filteredGraph()
+                # Plot the original signal without considering the threshold
+                y_values = np.array(self.signal.y_values)
+                self.ui.InputSignal.clear()
+                self.ui.InputSignal.plot(y_values, pen=pg.mkPen('w'), name='Original Signal')
+
+                # Check if the slider value is greater than a threshold
+                threshold_value = self.ui.horizontalSlider.value()
+                if len(self.signal.y_values) >= threshold_value:
+                    # Filter the entire signal and plot the filtered signal
+                    self.filteredGraph()
 
 
     def update_plot_Allpass(self):
@@ -424,12 +441,6 @@ class MainWindow(QMainWindow):
 
         # Plot phase response in Correctedphaseplot
         self.plot_Phase_allpass(w, h, key=2)
-
-        
-    def update_speed(self, value):
-        self.speed = value
-        if self.timer.isActive():
-            self.timer.setInterval(int(1000 / self.speed))
 
 
         
