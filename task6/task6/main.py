@@ -21,6 +21,8 @@ import time
 import numpy as np
 from scipy.interpolate import interp1d
 from scipy import signal
+from scipy.signal import zpk2tf, freqz
+
 # class Worker(QObject):
 #     progress = Signal(int)
 #     completed = Signal(int)
@@ -61,6 +63,8 @@ class MainWindow(QMainWindow):
         self.ui.zPlaneCircle.scene().sigMouseClicked.connect(self.mouseClickEvent)
         self.zeros = []
         self.poles = []
+        self.plottedZeros = []
+        self.plottedPoles = []
         self.selected_item = None
         self.ui.actionApply.triggered.connect(self.openApply)
         self.ui.actionAdjust_Phase.triggered.connect(self.openPhaseAdjust)
@@ -69,6 +73,9 @@ class MainWindow(QMainWindow):
         self.ui.actionOpen.triggered.connect(self.load)
         self.ui.Apply.clicked.connect(self.update_plot_Allpass) 
         self.ui.AddFilter.clicked.connect(self.addtocombo)
+        self.ui.clear_4.clicked.connect(self.clear_Zeros_Poles)
+        self.ui.remove.clicked.connect(self.removeallpass)
+        self.ui.correctPhase_4.clicked.connect(self.update_CorrectedPhase_Plot)
         ## Change Qpushbutton Checkable status when stackedWidget index changed
         # self.worker = Worker()
         self.scene = QGraphicsScene(self)
@@ -83,13 +90,14 @@ class MainWindow(QMainWindow):
         self.ui.Touchpad.mouseMoveEvent = self.MouseMoving
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_plot)
-        self.timer.start(100)
-        default_values = ["2-8j", "3.5+1.5j", "0.7071+0.7071j"]
+        self.timer.start(50)
+        default_values = ["-0.5-0.5j", "3.5+1.5j", "0.7071+0.7071j"]
         self.ui.comboBox.addItems(default_values)
         self.ui.horizontalSlider.setMinimum(1)
         self.ui.horizontalSlider.setMaximum(1000)
-        self.ui.horizontalSlider.setValue(500)
+        self.ui.horizontalSlider.setValue(0)
         self.ui.horizontalSlider.valueChanged.connect(self.update_speed)
+        
         # Start real-time filtering process automatically
        # self.start_real_time_filtering()
         #self.timer =QTimer()
@@ -108,6 +116,23 @@ class MainWindow(QMainWindow):
         self.ui.zPlaneCircle.setAspectLocked()
         self.ui.zPlaneCircle.plot(x, y, pen=pg.mkPen('b'))
         self.ui.zPlaneCircle.showGrid(True, True)
+    def clear_Zeros_Poles(self):
+        if self.ui.comboBox_2.currentIndex()==0:
+            for plottedItem in self.plottedZeros:
+                self.ui.zPlaneCircle.removeItem(plottedItem)
+            self.zeros=[]
+        elif self.ui.comboBox_2.currentIndex()==1:
+            for plottedItem in self.plottedPoles:
+                self.ui.zPlaneCircle.removeItem(plottedItem)
+            self.poles=[]
+        elif self.ui.comboBox_2.currentIndex()==2:
+            for plottedItem in self.plottedZeros:
+                self.ui.zPlaneCircle.removeItem(plottedItem)
+            for plottedItem in self.plottedPoles:
+                self.ui.zPlaneCircle.removeItem(plottedItem)
+            self.zeros=[]
+            self.poles=[]
+
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Backspace:
             # Check if there is a selected item
@@ -125,23 +150,71 @@ class MainWindow(QMainWindow):
                 self.selected_item = None
 
     def mouseClickEvent(self, event):
-        pos = event.pos()
-        pos_scene = self.ui.zPlaneCircle.getViewBox().mapSceneToView(pos)
+            pos = event.pos()
+            pos_scene = self.ui.zPlaneCircle.getViewBox().mapToView(pos)
+            x = pos_scene.x()
+            y = pos_scene.y()
 
-        if event.double():
-                    if self.ui.radioButton_2.isChecked():
-                        # Zeros
-                        zero = pg.ScatterPlotItem(x=[pos_scene.x()], y=[pos_scene.y()], pen=pg.mkPen('g'), symbol='o')
-                        self.ui.zPlaneCircle.addItem(zero)
-                        self.zeros.append(zero)
-                        self.selected_item = zero  # Set the selected item to the newly added zero
+            if event.double():
+                if self.ui.radioButton_2.isChecked():
+                    zero = complex(x, y)
+                    scatter_item = pg.ScatterPlotItem(x=[x], y=[y], pen=pg.mkPen('g'), symbol='o')
+                    self.plottedZeros.append(scatter_item)
+                    self.ui.zPlaneCircle.addItem(scatter_item)
+                    self.zeros.append(zero)
 
-                    elif self.ui.radioButton.isChecked():
-                        # Poles
-                        pole = pg.ScatterPlotItem(x=[pos_scene.x()], y=[pos_scene.y()], pen=pg.mkPen('r'), symbol='x')
-                        self.ui.zPlaneCircle.addItem(pole)
-                        self.poles.append(pole)
-                        self.selected_item = pole  # Set the selected item to the newly added pole
+                elif self.ui.radioButton.isChecked():
+                    pole = complex(x, y)
+                    scatter_item = pg.ScatterPlotItem(x=[x], y=[y], pen=pg.mkPen('r'), symbol='x')
+                    self.plottedPoles.append(scatter_item)
+                    self.ui.zPlaneCircle.addItem(scatter_item)
+                    self.poles.append(pole)
+
+
+                self.update_Mag_Phase_Response()
+    
+
+    def update_CorrectedPhase_Plot(self):
+        # Clear previous plots
+        self.ui.Correctedphaseplot.clear()
+
+        # Plot zeros and poles
+        for zero in self.zeros:
+            self.ui.Correctedphaseplot.plot([np.angle(zero)], [0], pen=None,)
+
+        for pole in self.poles:
+            self.ui.Correctedphaseplot.plot([np.angle(pole)], [0], pen=None)
+
+        self.ui.Correctedphaseplot.setTitle('Zeros and Poles on Unit Circle')
+        self.ui.Correctedphaseplot.showGrid(x=True, y=True)
+
+        # Compute the frequency response
+        num, den = zpk2tf(self.zeros, self.poles, 1)
+        w, h = signal.freqz(num, den)
+
+        # Plot phase response
+        self.plot_Phase_allpass(w, h, key=2)
+
+    def update_Mag_Phase_Response(self):
+            # Clear previous plots
+            self.ui.magPlot.clear()
+            self.ui.phasePlot.clear()
+
+            # Check if there are zeros and poles
+            if self.zeros or self.poles:
+                # Convert zeros, poles, and gain to numerator and denominator coefficients
+                num, den = zpk2tf(self.zeros, self.poles, 1)
+
+                # Compute the frequency response
+                w, FreqResp = freqz(num, den)
+
+                # Plot the magnitude response
+                self.ui.magPlot.plot(w, 20 * np.log10(abs(FreqResp)))
+
+                # Plot the phase response
+                self.ui.phasePlot.plot(w, np.angle(FreqResp, deg=True))
+
+
 
 
 
@@ -174,7 +247,7 @@ class MainWindow(QMainWindow):
 
     def load(self):
         if self.ui.Touchpadcheckbox.isChecked() == False:
-            filename = QtWidgets.QFileDialog.getOpenFileName()
+            filename, _ = QtWidgets.QFileDialog.getOpenFileName()
             path = filename[0]
 
             if path.endswith(".txt"):
@@ -190,33 +263,27 @@ class MainWindow(QMainWindow):
                     LinePloting.append(newplot)
                     self.ui.InputSignal.clear()
                     pen = pg.mkPen(color=self.generate_random_color())
-                    name = "Signal 1"
                     self.ui.InputSignal.plot(newplot.data["time"],newplot.data["amplitude"],pen = pen)
                     self.ui.InputSignal.setLimits(xMin = 0 ,xMax = newplot.data["time"].max())
                     self.ui.InputSignal.setXRange(0,0.1,padding=0)
-                    self.timer2 = QtCore.QTimer()
-                    self.timer2.setInterval(int(50))
-                    self.timer2.timeout.connect(
-                        self.UpdatePlots
-                    )  # Connect to a single update method
-                    self.timer2.start()
+                    if not self.timer.isActive():
+                        self.timer.timeout.connect(self.UpdatePlots)
+                        self.timer.start()
                     
             elif path.endswith(".csv"):
                     newplot = PlotLine()
                     newplot.data = pd.read_csv(path, usecols=["time", "amplitude"])
                     LinePloting.append(newplot)
-                    name = "Signal 1"
                     self.ui.InputSignal.clear()
                     pen = pg.mkPen(color=self.generate_random_color())
                     self.ui.InputSignal.plot(newplot.data["time"],newplot.data["amplitude"],pen=pen)
                     self.ui.InputSignal.setXRange(0,10,padding=0)
                     # self.ui.InputSignal.setLimits(xMin = 0 ,xMax = newplot.data["time"].max())
-                    self.timer2 = QtCore.QTimer()
-                    self.timer2.setInterval(int(50))
-                    self.timer2.timeout.connect(
-                        self.UpdatePlots
-                    )  # Connect to a single update method
-                    self.timer2.start()
+                    if not self.timer.isActive():
+                        self.timer.timeout.connect(self.UpdatePlots)
+                        self.timer.start()
+            else:
+                    self.show_error_message("Invalid file format. Please select a CSV file.")
         else:
             self.ErrorMsg("Check the Check box")
 
@@ -230,6 +297,10 @@ class MainWindow(QMainWindow):
              self.timer.stop()
 
         self.ui.InputSignal.setLimits(xMin = 0 ,xMax = LinePloting[-1].data["time"].max())
+    def removeallpass(self):
+        self.ui.AllpassZplane.clear()
+        self.ui.AllPassPhasePlot.clear()
+        self.ui.Correctedphaseplot.clear()
 
     def plot_signal(self, y_values):
         self.ui.InputSignal.clear()
@@ -249,19 +320,22 @@ class MainWindow(QMainWindow):
         if self.ui.Touchpadcheckbox.isChecked():
             # Plot the signal with interpolation for smoother curve
             if len(self.signal.y_values) >= 2:
-                self.ui.InputSignal.plot(self.signal.y_values)
                 self.filteredGraph()
 
 
     def update_plot_Allpass(self):
         selected_text = self.ui.comboBox.currentText()
-    
+
         if self.ui.InsertFilterText.text():
             a = complex(self.ui.InsertFilterText.text())
         else:
-           
             a = complex(selected_text)
-        self.represent_allpass(a)
+
+        # Get zero and pole of all-pass
+        z, p, k = signal.tf2zpk([-a, 1.0], [1.0, -a])
+
+    # Update zeros and poles of the all-pass filter
+        self.add_zeros_poles_from_allpass(z, p)
        
 
     def filteredGraph(self):
@@ -273,14 +347,14 @@ class MainWindow(QMainWindow):
                 # Filter the entire signal
                 filtered_values = signal.lfilter([1.0], [1.0], y_values)
                 # Plot the original and filtered signals
-                self.ui.InputSignal.plot(y_values, pen=pg.mkPen('b'), name='Original Signal')
+                self.ui.InputSignal.plot(y_values, pen=pg.mkPen('w'), name='Original Signal')
                 self.ui.OutputFilteredSignal.plot(filtered_values, pen=pg.mkPen('r'), name='Filtered Signal')
         else:
             YData = LinePloting[-1].data["amplitude"]
             # Filter the entire signal
             filteredgraph = signal.lfilter(YData, [1.0], YData)
             # Plot the original and filtered signals
-            self.ui.InputSignal.plot(YData, pen=pg.mkPen('b'), name='Original Signal')
+            self.ui.InputSignal.plot(YData, pen=pg.mkPen('w'), name='Original Signal')
             self.ui.OutputFilteredSignal.plot(filteredgraph, pen=pg.mkPen('r'), name='Filtered Signal')
 
         # Add a legend to the plot
@@ -289,31 +363,8 @@ class MainWindow(QMainWindow):
 
 
 
-    def represent_allpass(self, a):
-        # Get zero and pole of all-pass
-        z, p, k = signal.tf2zpk([-a, 1.0], [1.0, -a])
 
-        self.ui.AllPassPhasePlot.clear()
-        self.ui.AllpassZplane.clear()
 
-        unit_circle_item = pg.PlotDataItem()
-        theta = np.linspace(0, 2 * np.pi, 100)
-        x = np.cos(theta)
-        y = np.sin(theta)
-        unit_circle_item.setData(x=x, y=y, pen=pg.mkPen('r'))
-        self.ui.AllpassZplane.addItem(unit_circle_item)
-        self.add_zeros_poles_from_allpass(z,p)
-
-        for zero in z:
-            self.ui.AllpassZplane.plot([np.real(zero)], [np.imag(zero)], pen=None, symbol='o', symbolBrush='r') #######
-
-        for pole in p:
-            self.ui.AllpassZplane.plot([np.real(pole)], [np.imag(pole)], pen=None, symbol='x', symbolBrush='b')
-
-        self.ui.AllpassZplane.setTitle('Zeros and Poles on Unit Circle')
-        self.ui.AllpassZplane.showGrid(x=True, y=True)
-        w, h = signal.freqz([-a, 1.0], [1.0, -a])
-        self.plot_Phase_allpass(w,h,1)
         
     def plot_Phase_allpass(self,w,h,key):
         # Plot phase response
@@ -326,12 +377,12 @@ class MainWindow(QMainWindow):
             self.ui.AllPassPhasePlot.showGrid(x=True, y=True)
         else:
             
-            self.ui.AllPassPhasePlot.plot(w, phase_response, pen=pg.mkPen('b'))
-            self.ui.AllPassPhasePlot.setTitle('Phase Response')
-            self.ui.AllPassPhasePlot.setLabel('bottom', 'Frequency [Hz]')
-            self.ui.AllPassPhasePlot.setLabel('left', 'Phase [radians]')
-            self.ui.AllPassPhasePlot.showGrid(x=True, y=True)
-
+            self.ui.Correctedphaseplot.plot(w, phase_response, pen=pg.mkPen('b'))
+            self.ui.Correctedphaseplot.setTitle('Corrected Phase Response')
+            self.ui.Correctedphaseplot.setLabel('bottom', 'Frequency [Hz]')
+            self.ui.Correctedphaseplot.setLabel('left', 'Phase [radians]')
+            self.ui.Correctedphaseplot.showGrid(x=True, y=True)
+   
     def addtocombo(self):
       
         new_value = self.ui.InsertFilterText.text()
@@ -340,9 +391,41 @@ class MainWindow(QMainWindow):
                 self.ui.comboBox.addItem(new_value)
 
     def add_zeros_poles_from_allpass(self, z, p):
-        #this function should take zeros and poles of all pass filter and add them to created filter
-        #also we should call plot_phase_allpass function to plot corrected phase with key !=1
-        pass
+            # Clear previous plots
+        self.ui.AllpassZplane.clear()
+        self.ui.AllPassPhasePlot.clear()
+        self.ui.Correctedphaseplot.clear()
+
+
+        # Add unit circle to Z-plane plot
+        unit_circle_item = pg.PlotDataItem()
+        theta = np.linspace(0, 2 * np.pi, 100)
+        x = np.cos(theta)
+        y = np.sin(theta)
+        unit_circle_item.setData(x=x, y=y, pen=pg.mkPen('r'))
+        self.ui.AllpassZplane.addItem(unit_circle_item)
+
+        # Plot zeros and poles
+        for zero in z:
+            self.ui.AllpassZplane.plot([np.real(zero)], [np.imag(zero)], pen=None, symbol='o', symbolBrush='r')
+
+        for pole in p:
+            self.ui.AllpassZplane.plot([np.real(pole)], [np.imag(pole)], pen=None, symbol='x', symbolBrush='b')
+
+        self.ui.AllpassZplane.setTitle('Zeros and Poles on Unit Circle')
+        self.ui.AllpassZplane.showGrid(x=True, y=True)
+
+        # Compute the frequency response
+        num, den = zpk2tf(z, p, 1)
+        w, h = signal.freqz(num, den)
+
+         # Plot phase response in AllPassPhasePlot
+        self.plot_Phase_allpass(w, h, key=1)
+
+        # Plot phase response in Correctedphaseplot
+        self.plot_Phase_allpass(w, h, key=2)
+
+        
     def update_speed(self, value):
         self.speed = value
         if self.timer.isActive():
