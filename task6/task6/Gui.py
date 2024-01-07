@@ -83,8 +83,8 @@ class Ui_MainWindow(object):
         self.verticalLayout_10.addLayout(self.horizontalLayout_19)
         self.horizontalLayout_20 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_20.setObjectName("horizontalLayout_20")
-        self.comboBox_4 = QtWidgets.QComboBox(self.DesignPage)
-        self.comboBox_4.setStyleSheet("QComboBox {\n"
+        self.comboBox_2 = QtWidgets.QComboBox(self.DesignPage)
+        self.comboBox_2.setStyleSheet("QComboBox {\n"
 "    font-family: \"Overpass\";\n"
 "    font-weight: 600; /* Semibold */\n"
 "    font-size: 10pt; /* Adjust the font size as needed */\n"
@@ -93,11 +93,11 @@ class Ui_MainWindow(object):
 "background: rgba(74, 74, 74, 0);\n"
 "    border-radius: 10px;\n"
 "}")
-        self.comboBox_4.setObjectName("comboBox_4")
-        self.comboBox_4.addItem("")
-        self.comboBox_4.addItem("")
-        self.comboBox_4.addItem("")
-        self.horizontalLayout_20.addWidget(self.comboBox_4)
+        self.comboBox_2.setObjectName("comboBox_2")
+        self.comboBox_2.addItem("")
+        self.comboBox_2.addItem("")
+        self.comboBox_2.addItem("")
+        self.horizontalLayout_20.addWidget(self.comboBox_2)
         self.clear_4 = QtWidgets.QPushButton(self.DesignPage)
         font = QtGui.QFont()
         font.setFamily("-apple-system")
@@ -289,6 +289,29 @@ class Ui_MainWindow(object):
         self.Apply.setObjectName("Apply")
         self.horizontalLayout_24.addWidget(self.Apply)
         self.verticalLayout_12.addLayout(self.horizontalLayout_24)
+        self.remove = QtWidgets.QPushButton(self.CorrectPage)
+        self.remove.setStyleSheet("QPushButton{\n"
+"  appearance: button;\n"
+"  border-radius: 6px;\n"
+"  border-width: 0;\n"
+"  box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset,rgba(50, 50, 93, .1) 0 2px 5px 0,rgba(0, 0, 0, .07) 0 1px 1px 0;\n"
+"color: rgb(255, 255, 255);\n"
+"background-color:rgb(22, 25, 76);\n"
+"  cursor: pointer;\n"
+"  font-family: -apple-system,system-ui,\"Segoe UI\",Roboto,\"Helvetica Neue\",Ubuntu,sans-serif;\n"
+"  height: 30px;\n"
+"  margin: 0 20px 0 20px;\n"
+"  position: center;\n"
+"  width:70px;\n"
+"}\n"
+"QPushButton:hover{\n"
+"background-color: #283999;\n"
+"}\n"
+"QPushButton:pressed{\n"
+"background-color: #1c2973;\n"
+"}")
+        self.remove.setObjectName("remove")
+        self.verticalLayout_12.addWidget(self.remove)
         spacerItem5 = QtWidgets.QSpacerItem(20, 80, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_12.addItem(spacerItem5)
         self.verticalLayout_12.setStretch(1, 1)
@@ -304,10 +327,10 @@ class Ui_MainWindow(object):
 "font-weight:10000px;")
         self.label_25.setObjectName("label_25")
         self.verticalLayout_13.addWidget(self.label_25)
-        self.AllPassMagPlot = PlotWidget(self.CorrectPage)
-        self.AllPassMagPlot.setStyleSheet("background-color: rgb(0, 0, 0);")
-        self.AllPassMagPlot.setObjectName("AllPassMagPlot")
-        self.verticalLayout_13.addWidget(self.AllPassMagPlot)
+        self.Correctedphaseplot = PlotWidget(self.CorrectPage)
+        self.Correctedphaseplot.setStyleSheet("background-color: rgb(0, 0, 0);")
+        self.Correctedphaseplot.setObjectName("Correctedphaseplot")
+        self.verticalLayout_13.addWidget(self.Correctedphaseplot)
         self.label_26 = QtWidgets.QLabel(self.CorrectPage)
         font = QtGui.QFont()
         font.setPointSize(11)
@@ -455,9 +478,9 @@ class Ui_MainWindow(object):
         self.checkBox_4.setText(_translate("MainWindow", "conjugates"))
         self.radioButton_2.setText(_translate("MainWindow", "Zeros"))
         self.radioButton.setText(_translate("MainWindow", "Poles"))
-        self.comboBox_4.setItemText(0, _translate("MainWindow", "zeros"))
-        self.comboBox_4.setItemText(1, _translate("MainWindow", "poles"))
-        self.comboBox_4.setItemText(2, _translate("MainWindow", "both"))
+        self.comboBox_2.setItemText(0, _translate("MainWindow", "Zeros"))
+        self.comboBox_2.setItemText(1, _translate("MainWindow", "Poles"))
+        self.comboBox_2.setItemText(2, _translate("MainWindow", "Both"))
         self.clear_4.setText(_translate("MainWindow", "Clear"))
         self.label_20.setText(_translate("MainWindow", "Magnitude Response"))
         self.label_21.setText(_translate("MainWindow", "Phase Response"))
@@ -466,7 +489,8 @@ class Ui_MainWindow(object):
         self.label.setText(_translate("MainWindow", "All Pass Filters"))
         self.AddFilter.setText(_translate("MainWindow", "Add"))
         self.Apply.setText(_translate("MainWindow", "Apply"))
-        self.label_25.setText(_translate("MainWindow", "Magnitude Response"))
+        self.remove.setText(_translate("MainWindow", "Remove"))
+        self.label_25.setText(_translate("MainWindow", "Corrected Phase"))
         self.label_26.setText(_translate("MainWindow", "Phase Response"))
         self.label_23.setText(_translate("MainWindow", "Input"))
         self.label_22.setText(_translate("MainWindow", "Output"))
