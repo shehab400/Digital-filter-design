@@ -203,18 +203,22 @@ class MyWindow(QMainWindow):
                         self.UpdatePlots
                     )  # Connect to a single update method
                     self.timer2.start()
+            self.plotWidget7.setYRange(newplot.data["amplitude"].min(),newplot.data["amplitude"].max())
+
         else:
             self.ErrorMsg("Load Signal is NOT checked")
 
-    def UpdatePlots(self):
-
+    def UpdatePlots(self): 
         xmin=self.plotWidget7.getViewBox().viewRange()[0][0]
         xmax=self.plotWidget7.getViewBox().viewRange()[0][1]
         if xmax <= PlotLine1[-1].data["time"].max():
-            self.plotWidget7.setXRange(xmin+10,xmax+10,padding=0)
+            self.plotWidget7.setXRange(xmin+0.5,xmax+0.5,padding=0)
         else:
              self.timer.stop()
 
+        newplot = PlotLine1[-1]
+        # self.plotWidget7.setXRange(newplot.data['time'].min(),newplot.data['time'].max(),padding=0)
+        # self.plotWidget7.setYRange(newplot.data['amplitude'].min(),newplot.data['amplitude'].max(),padding=0)
         self.plotWidget7.setLimits(xMin = 0 ,xMax = PlotLine1[-1].data["time"].max())
 
     def plot_signal(self, y_values):
@@ -311,3 +315,12 @@ class MyWindow(QMainWindow):
         #this function should take zeros and poles of all pass filter and add them to created filter
         #also we should call plot_phase_allpass function to plot corrected phase with key !=1
         pass
+
+    ############
+    def plotZplane(self):
+        theta = np.linspace(0, 2 * np.pi, 100)
+        x = np.cos(theta)
+        y = np.sin(theta)
+        self.ui.zPlaneCircle.setAspectLocked()
+        self.ui.zPlaneCircle.plot(x, y, pen=pg.mkPen('b'))
+        self.ui.zPlaneCircle.showGrid(True, True)
