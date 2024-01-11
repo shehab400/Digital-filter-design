@@ -59,7 +59,11 @@ class MyWindow(QMainWindow):
         self.ui.pushButton_7.clicked.connect(self.apply)
         self.ui.pushButton_2.clicked.connect(self.clear_ZEROS)
         self.ui.pushButton.clicked.connect(self.Clear_POLES)    
-
+        self.ui.horizontalSlider.setMinimum(1)
+        self.ui.horizontalSlider.setMaximum(1000)
+        self.ui.horizontalSlider.setValue(0)
+        self.label_3 = self.ui.label_16 
+        self.ui.horizontalSlider.valueChanged.connect(self.update_slider_value)
         ## Change Qpushbutton Checkable status when stackedWidget index changed
         self.ui.radioButton_3.setChecked(True)
         # self.worker = Worker()
@@ -251,7 +255,14 @@ class MyWindow(QMainWindow):
             # Plot the signal with interpolation for smoother curve
             if len(self.signal.y_values) >= 2:
                 self.plotWidget7.plot(self.signal.y_values)
-                self.filteredGraph()
+                y_values = np.array(self.signal.y_values)
+                # self.ui.InputSignal.clear()
+                # self.ui.InputSignal.plot(y_values, pen=pg.mkPen('w'), name='Original Signal')
+
+                # Check if the slider value is greater than a threshold
+                threshold_value = self.ui.horizontalSlider.value()
+                if len(self.signal.y_values) >= threshold_value:
+                    self.filteredGraph()
 
 
     def update_plot_Allpass(self):
@@ -273,28 +284,33 @@ class MyWindow(QMainWindow):
     #         filteredgraph = signal.lfilter(self.signal.y_values)
     #         #plot
 
-    # def filteredGraph(self):
-    #     self.ui.InputSignal.clear()
+    def filteredGraph(self):
+        self.ui.plotWidget7.clear()
+        num, den = signal.zpk2tf(self.zeros, self.poles, 1)
+        if self.ui.radioButton_4.isChecked():
+            y_values = np.array(self.signal.y_values)
+            if len(y_values) >= 2:
+                # Filter the entire signal
+                filtered_values = signal.lfilter(num, den, y_values)
+                real_parts = np.real(filtered_values)
+                # Plot the original and filtered signals
+                self.ui.plotWidget7.plot(y_values, pen=pg.mkPen('w'), name='Original Signal')
+                self.ui.plotWidget8.plot(real_parts, pen=pg.mkPen('r'), name='Filtered Signal')
+        elif self.ui.radioButton_3.isChecked():
+            Data = PlotLine1[-1]
+            # Filter the entire signal
+            filteredgraph = signal.lfilter(num, den, Data)
+            # Plot the original and filtered signals
+            self.ui.plotWidget7.plot(Data, pen=pg.mkPen('w'), name='Original Signal')
+            self.ui.plotWidget8.plot(filteredgraph, pen=pg.mkPen('r'), name='Filtered Signal')
 
-    #     if self.ui.Touchpadcheckbox.isChecked():
-    #         y_values = np.array(self.signal.y_values)
-    #         if len(y_values) >= 2:
-    #             # Filter the entire signal
-    #             filtered_values = signal.lfilter([1.0], [1.0], y_values)
-    #             # Plot the original and filtered signals
-    #             self.ui.InputSignal.plot(y_values, pen=pg.mkPen('w'), name='Original Signal')
-    #             self.ui.OutputFilteredSignal.plot(filtered_values, pen=pg.mkPen('r'), name='Filtered Signal')
-    #     else:
-    #         YData = LinePloting[-1].data["amplitude"]
-    #         # Filter the entire signal
-    #         filteredgraph = signal.lfilter(YData, [1.0], YData)
-    #         # Plot the original and filtered signals
-    #         self.ui.InputSignal.plot(YData, pen=pg.mkPen('w'), name='Original Signal')
-    #         self.ui.OutputFilteredSignal.plot(filteredgraph, pen=pg.mkPen('r'), name='Filtered Signal')
-
-    #     # Add a legend to the plot
-    #     if not hasattr(self, 'legend'):
-    #         self.legend = self.ui.InputSignal.addLegend()
+        # Add a legend to the plot
+        # if not hasattr(self, 'legend'):
+        #     self.legend = self.ui.InputSignal.addLegend()
+    
+    def update_slider_value(self, value):
+        # Update the text of the QLabel with the current slider value
+        self.label_3.setText(f"Slider Value: {value}")
 
     def represent_allpass(self, a):
         # Get zero and pole of all-pass
@@ -371,6 +387,7 @@ class MyWindow(QMainWindow):
         self.ui.plotWidget1.setAspectLocked(True)
         self.ui.plotWidget1.plot(x, y, pen=pg.mkPen('b'))
         self.ui.plotWidget1.showGrid(True, True)
+        
 
     def clear_ZEROS(self):
             self.zeros=[]
@@ -481,12 +498,11 @@ class MyWindow(QMainWindow):
                 self.ui.plotWidget6.plot(w, np.angle(FreqResp, deg=True))
 
 
-    def MouseMoving(self, event):
-         if self.ui.Touchpadcheckbox.isChecked():
-            y = event.pos().y()
-
-            # Add the y-coordinate to the Signal object
-            self.signal.add_point(y)
+    # def MouseMoving(self, event):
+    #      if self.ui.Touchpadcheckbox.isChecked():
+    #         y = event.pos().y()
+    #         # Add the y-coordinate to the Signal object
+    #         self.signal.add_point(y)
 
     # def keyPressEvent(self, event):
     #     if event.key() == Qt.Key_Backspace:
