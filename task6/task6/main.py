@@ -206,10 +206,6 @@ class MainWindow(QMainWindow):
                 # Plot the phase response
                 self.ui.phasePlot.plot(w, np.angle(FreqResp, deg=True))
 
-
-
-
-
     def MouseMoving(self, event):
          if self.ui.Touchpadcheckbox.isChecked():
             y = event.pos().y()
