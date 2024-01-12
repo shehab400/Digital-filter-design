@@ -137,7 +137,7 @@
             <string>Allpass-Filter</string>
            </property>
            <property name="icon">
-            <iconset resource="../../Task 3/Signal-Equalizer/resource.qrc">
+            <iconset>
              <normaloff>:/icon/Icons/wave.png</normaloff>
              <normalon>../../Task 3/Signal-Equalizer/Icons/wave.png</normalon>:/icon/Icons/wave.png</iconset>
            </property>
@@ -161,7 +161,7 @@
             <string>Output</string>
            </property>
            <property name="icon">
-            <iconset resource="../../Task 3/Signal-Equalizer/resource.qrc">
+            <iconset>
              <normaloff>:/icon/Icons/wave.png</normaloff>
              <normalon>../../Task 3/Signal-Equalizer/Icons/wave.png</normalon>:/icon/Icons/wave.png</iconset>
            </property>
@@ -304,6 +304,9 @@
                 </property>
                 <property name="text">
                  <string>Poles</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>
