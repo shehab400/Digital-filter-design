@@ -47,7 +47,6 @@ class MyWindow(QMainWindow):
     def __init__(self):
         super(MyWindow, self).__init__()
         self.ui = uic.loadUi("FixingGUI2.ui", self)
-
         self.ui.uniformWave.clicked.connect(self.filterDesign)
         self.ui.music.clicked.connect(self.allpassFilter)
         self.ui.animals.clicked.connect(self.output)
@@ -57,6 +56,14 @@ class MyWindow(QMainWindow):
         self.ui.pushButton_8.clicked.connect(self.load)
         self.ui.pushButton_7.clicked.connect(self.update_plot_Allpass)
         self.ui.pushButton_5.clicked.connect(self.add_value_to_combo)
+        self.ui.pushButton_7.clicked.connect(self.apply)
+        self.ui.pushButton_2.clicked.connect(self.clear_ZEROS)
+        self.ui.pushButton.clicked.connect(self.Clear_POLES)    
+        self.ui.horizontalSlider.setMinimum(1)
+        self.ui.horizontalSlider.setMaximum(1000)
+        self.ui.horizontalSlider.setValue(0)
+        self.label_3 = self.ui.label_16 
+        self.ui.horizontalSlider.valueChanged.connect(self.update_slider_value)
         ## Change Qpushbutton Checkable status when stackedWidget index changed
         self.ui.radioButton_3.setChecked(True)
         # self.worker = Worker()
@@ -105,6 +112,14 @@ class MyWindow(QMainWindow):
         # Signal object
         self.signal = Signal()
 
+        self.plotZplane()
+        self.ui.plotWidget1.scene().sigMouseClicked.connect(self.mouseClickEvent)
+        self.zeros = []
+        self.allpasszeros = []
+        self.allpasspoles = []
+        self.poles = []
+        self.plottedZeros = []
+        self.plottedPoles = []
         # Connect mouse events
         self.ui.touchPad.mouseMoveEvent = self.mouse_move_event
         self.timer = QTimer(self)
@@ -203,18 +218,22 @@ class MyWindow(QMainWindow):
                         self.UpdatePlots
                     )  # Connect to a single update method
                     self.timer2.start()
+            self.plotWidget7.setYRange(newplot.data["amplitude"].min(),newplot.data["amplitude"].max())
+
         else:
             self.ErrorMsg("Load Signal is NOT checked")
 
-    def UpdatePlots(self):
-
+    def UpdatePlots(self): 
         xmin=self.plotWidget7.getViewBox().viewRange()[0][0]
         xmax=self.plotWidget7.getViewBox().viewRange()[0][1]
         if xmax <= PlotLine1[-1].data["time"].max():
-            self.plotWidget7.setXRange(xmin+10,xmax+10,padding=0)
+            self.plotWidget7.setXRange(xmin+0.5,xmax+0.5,padding=0)
         else:
              self.timer.stop()
 
+        newplot = PlotLine1[-1]
+        # self.plotWidget7.setXRange(newplot.data['time'].min(),newplot.data['time'].max(),padding=0)
+        # self.plotWidget7.setYRange(newplot.data['amplitude'].min(),newplot.data['amplitude'].max(),padding=0)
         self.plotWidget7.setLimits(xMin = 0 ,xMax = PlotLine1[-1].data["time"].max())
 
     def plot_signal(self, y_values):
@@ -236,7 +255,14 @@ class MyWindow(QMainWindow):
             # Plot the signal with interpolation for smoother curve
             if len(self.signal.y_values) >= 2:
                 self.plotWidget7.plot(self.signal.y_values)
-                self.filteredGraph()
+                y_values = np.array(self.signal.y_values)
+                # self.ui.InputSignal.clear()
+                # self.ui.InputSignal.plot(y_values, pen=pg.mkPen('w'), name='Original Signal')
+
+                # Check if the slider value is greater than a threshold
+                threshold_value = self.ui.horizontalSlider.value()
+                if len(self.signal.y_values) >= threshold_value:
+                    self.filteredGraph()
 
 
     def update_plot_Allpass(self):
@@ -250,19 +276,47 @@ class MyWindow(QMainWindow):
         self.represent_allpass(a)
        
 
-    def filteredGraph(self):
-        if self.ui.radioButton_3.isChecked():
-            YData = PlotLine1[-1].data["amplitude"]
-            filteredgraph = signal.lfilter(YData)
-        elif self.ui.radioButton_4.isChecked():
-            filteredgraph = signal.lfilter(self.signal.y_values)
-            #plot
+    # def filteredGraph(self):
+    #     if self.ui.radioButton_3.isChecked():
+    #         YData = PlotLine1[-1].data["amplitude"]
+    #         filteredgraph = signal.lfilter(YData)
+    #     elif self.ui.radioButton_4.isChecked():
+    #         filteredgraph = signal.lfilter(self.signal.y_values)
+    #         #plot
 
+    def filteredGraph(self):
+        self.ui.plotWidget7.clear()
+        num, den = signal.zpk2tf(self.zeros, self.poles, 1)
+        if self.ui.radioButton_4.isChecked():
+            y_values = np.array(self.signal.y_values)
+            if len(y_values) >= 2:
+                # Filter the entire signal
+                filtered_values = signal.lfilter(num, den, y_values)
+                real_parts = np.real(filtered_values)
+                # Plot the original and filtered signals
+                self.ui.plotWidget7.plot(y_values, pen=pg.mkPen('w'), name='Original Signal')
+                self.ui.plotWidget8.plot(real_parts, pen=pg.mkPen('r'), name='Filtered Signal')
+        elif self.ui.radioButton_3.isChecked():
+            Data = PlotLine1[-1]
+            # Filter the entire signal
+            filteredgraph = signal.lfilter(num, den, Data)
+            # Plot the original and filtered signals
+            self.ui.plotWidget7.plot(Data, pen=pg.mkPen('w'), name='Original Signal')
+            self.ui.plotWidget8.plot(filteredgraph, pen=pg.mkPen('r'), name='Filtered Signal')
+
+        # Add a legend to the plot
+        # if not hasattr(self, 'legend'):
+        #     self.legend = self.ui.InputSignal.addLegend()
+    
+    def update_slider_value(self, value):
+        # Update the text of the QLabel with the current slider value
+        self.label_3.setText(f"Slider Value: {value}")
 
     def represent_allpass(self, a):
         # Get zero and pole of all-pass
         z, p, k = signal.tf2zpk([-a, 1.0], [1.0, -a])
-
+        self.allpasszeros=z
+        self.allpasspoles=p
         self.ui.plotWidget5.clear()
         self.ui.plotWidget4.clear()
 
@@ -276,14 +330,26 @@ class MyWindow(QMainWindow):
 
         for zero in z:
             self.ui.plotWidget4.plot([np.real(zero)], [np.imag(zero)], pen=None, symbol='o', symbolBrush='r') #######
+            self.zeros.append(zero)
 
         for pole in p:
             self.ui.plotWidget4.plot([np.real(pole)], [np.imag(pole)], pen=None, symbol='x', symbolBrush='b')
+            self.poles.append(pole)
 
         self.ui.plotWidget4.setTitle('Zeros and Poles on Unit Circle')
         self.ui.plotWidget4.showGrid(x=True, y=True)
         w, h = signal.freqz([-a, 1.0], [1.0, -a])
         self.plot_Phase_allpass(w,h,1)
+
+
+    def apply(self):
+        for zero,pole in zip(self.allpasszeros,self.allpasspoles):
+            self.zeros.append(zero)
+            self.poles.append(pole)
+        for zero, pole in zip(self.zeros,self.poles):
+            self.ui.plotWidget1.plot([np.real(zero)], [np.imag(zero)], pen=None, symbol='o', symbolBrush='r') #######
+            self.ui.plotWidget1.plot([np.real(pole)], [np.imag(pole)], pen=None, symbol='x', symbolBrush='b')
+        self.update_Mag_Phase_Response()
     def plot_Phase_allpass(self,w,h,key):
         # Plot phase response
         phase_response = np.unwrap(np.angle(h))
@@ -311,3 +377,145 @@ class MyWindow(QMainWindow):
         #this function should take zeros and poles of all pass filter and add them to created filter
         #also we should call plot_phase_allpass function to plot corrected phase with key !=1
         pass
+
+    ############ 
+    def plotZplane(self):
+        theta = np.linspace(0, 2 * np.pi, 100)
+        x = np.cos(theta)
+        y = np.sin(theta)
+        pen = pg.mkPen(color=self.random_color())
+        self.ui.plotWidget1.setAspectLocked(True)
+        self.ui.plotWidget1.plot(x, y, pen=pg.mkPen('b'))
+        self.ui.plotWidget1.showGrid(True, True)
+        
+
+    def clear_ZEROS(self):
+            self.zeros=[]
+            self.plotWidget1.clear()
+            self.plotZplane()
+            for poles in (self.poles):
+             self.ui.plotWidget1.plot([np.real(poles)], [np.imag(poles)], pen=None, symbol='o', symbolBrush='r') #######
+            self.update_Mag_Phase_Response()
+        
+
+
+    def Clear_POLES(self):
+            self.poles=[]
+            self.plotWidget1.clear()
+            self.plotZplane()
+            for zeros in (self.zeros):
+              self.ui.plotWidget1.plot([np.real(zeros)], [np.imag(zeros)], pen=None, symbol='o', symbolBrush='r') #######
+            self.update_Mag_Phase_Response()
+
+        # elif self.ui.comboBox.currentIndex()==2:
+        #     for plottedItem in self.plottedZeros:
+        #         self.ui.plotWidget1.removeItem(plottedItem)
+        #     for plottedItem in self.plottedPoles:
+        #         self.ui.plotWidget1.removeItem(plottedItem)
+        #     self.zeros=[]
+        #     self.poles=[]
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key_Backspace:
+            # Check if there is a selected item
+            if self.selected_item:
+                # Remove the selected item from the plot
+                self.ui.plotWidget1.removeItem(self.selected_item)
+
+                # Remove the corresponding tuple from the zeros or poles list
+                if self.selected_item in self.zeros:
+                    self.zeros.remove(self.selected_item)
+                elif self.selected_item in self.poles:
+                    self.poles.remove(self.selected_item)
+
+                # Set selected_item to None after removal
+                self.selected_item = None
+
+    def mouseClickEvent(self, event):
+            pos = event.pos()
+            pos_scene = self.ui.plotWidget1.getViewBox().mapToView(pos)
+            x = pos_scene.x()
+            y = pos_scene.y()
+
+            if event.double():
+                if self.ui.radioButton_2.isChecked():
+                    zero = complex(x, y)
+                    scatter_item = pg.ScatterPlotItem(x=[x], y=[y], pen=pg.mkPen('g'), symbol='o')
+                    self.plottedZeros.append(scatter_item)
+                    self.ui.plotWidget1.addItem(scatter_item)
+                    self.zeros.append(zero)
+
+                elif self.ui.radioButton.isChecked():
+                    pole = complex(x, y)
+                    scatter_item = pg.ScatterPlotItem(x=[x], y=[y], pen=pg.mkPen('r'), symbol='x')
+                    self.plottedPoles.append(scatter_item)
+                    self.ui.plotWidget1.addItem(scatter_item)
+                    self.poles.append(pole)
+
+
+                self.update_Mag_Phase_Response()
+                # self.update_CorrectedPhase_Plot()
+    
+
+    def update_CorrectedPhase_Plot(self):
+        # Clear previous plots
+        self.ui.plotWidget6.clear()
+
+        # Plot zeros and poles
+        for zero in self.zeros:
+            self.ui.plotWidget6.plot([np.angle(zero)], [0], pen=None,)
+
+        for pole in self.poles:
+            self.ui.plotWidget6.plot([np.angle(pole)], [0], pen=None)
+
+        self.ui.plotWidget6.setTitle('Zeros and Poles on Unit Circle')
+        # self.ui.plotWidget6.showGrid(x=True, y=True)
+
+        # Compute the frequency response
+        num, den = signal.zpk2tf(self.zeros, self.poles, 1)
+        w, h = signal.freqz(num, den)
+
+        # Plot phase response
+        self.plot_Phase_allpass(w, h, key=2)
+
+    def update_Mag_Phase_Response(self):
+            # Clear previous plots
+            self.ui.plotWidget2.clear()
+            self.ui.plotWidget3.clear()
+            self.ui.plotWidget6.clear()
+            # Check if there are zeros and poles
+            if self.zeros or self.poles:
+                # Convert zeros, poles, and gain to numerator and denominator coefficients
+                num, den = signal.zpk2tf(self.zeros, self.poles, 1)
+
+                # Compute the frequency response
+                w, FreqResp = signal.freqz(num, den)
+
+                # Plot the magnitude response
+                self.ui.plotWidget2.plot(w, 20 * np.log10(abs(FreqResp)))
+
+                # Plot the phase response
+                self.ui.plotWidget3.plot(w, np.angle(FreqResp, deg=True))
+                self.ui.plotWidget6.plot(w, np.angle(FreqResp, deg=True))
+
+
+    # def MouseMoving(self, event):
+    #      if self.ui.Touchpadcheckbox.isChecked():
+    #         y = event.pos().y()
+    #         # Add the y-coordinate to the Signal object
+    #         self.signal.add_point(y)
+
+    # def keyPressEvent(self, event):
+    #     if event.key() == Qt.Key_Backspace:
+    #         # Check if there is a selected item
+    #         if self.selected_item:
+    #             # Remove the selected item from the plot
+    #             self.ui.zPlaneCircle.removeItem(self.selected_item)
+
+    #             # Remove the corresponding tuple from the zeros or poles list
+    #             if self.selected_item in self.zeros:
+    #                 self.zeros.remove(self.selected_item)
+    #             elif self.selected_item in self.poles:
+    #                 self.poles.remove(self.selected_item)
+
+    #             # Set selected_item to None after removal
+    #             self.selected_item = None

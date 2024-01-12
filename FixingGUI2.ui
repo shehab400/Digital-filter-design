@@ -224,7 +224,7 @@
        <item row="2" column="0">
         <widget class="QStackedWidget" name="stackedWidget_2">
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="page_5">
           <layout class="QGridLayout" name="gridLayout_5">
@@ -295,7 +295,31 @@
            <item row="0" column="2">
             <widget class="QWidget" name="widget_4" native="true">
              <layout class="QGridLayout" name="gridLayout_8">
-              <item row="0" column="0" colspan="3">
+              <item row="1" column="0">
+               <widget class="QRadioButton" name="radioButton">
+                <property name="font">
+                 <font>
+                  <pointsize>16</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Poles</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1" colspan="3" alignment="Qt::AlignHCenter">
+               <widget class="QRadioButton" name="radioButton_2">
+                <property name="font">
+                 <font>
+                  <pointsize>16</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Zero's</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0" colspan="4">
                <widget class="QCheckBox" name="checkBox">
                 <property name="font">
                  <font>
@@ -308,15 +332,18 @@
                </widget>
               </item>
               <item row="2" column="0" colspan="2">
-               <widget class="QComboBox" name="comboBox">
+               <widget class="QPushButton" name="pushButton_2">
                 <property name="font">
                  <font>
                   <pointsize>12</pointsize>
                  </font>
                 </property>
+                <property name="text">
+                 <string>Clear Zero's</string>
+                </property>
                </widget>
               </item>
-              <item row="2" column="2">
+              <item row="2" column="2" colspan="2">
                <widget class="QPushButton" name="pushButton">
                 <property name="font">
                  <font>
@@ -324,31 +351,7 @@
                  </font>
                 </property>
                 <property name="text">
-                 <string>Clear</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QRadioButton" name="radioButton">
-                <property name="font">
-                 <font>
-                  <pointsize>16</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Zero's</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1" colspan="2" alignment="Qt::AlignHCenter">
-               <widget class="QRadioButton" name="radioButton_2">
-                <property name="font">
-                 <font>
-                  <pointsize>16</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Poles</string>
+                 <string>Clear Poles</string>
                 </property>
                </widget>
               </item>
@@ -423,77 +426,33 @@
              </layout>
             </widget>
            </item>
-           <item row="0" column="1">
-            <widget class="QWidget" name="widget_8" native="true">
+           <item row="2" column="0" colspan="2">
+            <widget class="QWidget" name="widget_13" native="true">
              <property name="styleSheet">
-              <string notr="true"/>
+              <string notr="true">  border: 2px solid rgb(25, 0, 108);
+  border-radius: 10px;</string>
              </property>
-             <layout class="QGridLayout" name="gridLayout_16">
-              <item row="0" column="0">
-               <widget class="QComboBox" name="comboBox_3"/>
-              </item>
-              <item row="1" column="0">
-               <widget class="QFrame" name="frame_3">
-                <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
+             <layout class="QGridLayout" name="gridLayout_19">
+              <item row="0" column="0" alignment="Qt::AlignTop">
+               <widget class="QLabel" name="label_13">
+                <property name="font">
+                 <font>
+                  <pointsize>14</pointsize>
+                 </font>
                 </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
+                <property name="styleSheet">
+                 <string notr="true">border:0px</string>
                 </property>
-                <layout class="QGridLayout" name="gridLayout_17">
-                 <item row="0" column="0">
-                  <widget class="QLabel" name="label_12">
-                   <property name="frameShape">
-                    <enum>QFrame::WinPanel</enum>
-                   </property>
-                   <property name="frameShadow">
-                    <enum>QFrame::Plain</enum>
-                   </property>
-                   <property name="lineWidth">
-                    <number>3</number>
-                   </property>
-                   <property name="midLineWidth">
-                    <number>0</number>
-                   </property>
-                   <property name="text">
-                    <string>Add Your Filter</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="1">
-                  <widget class="QPushButton" name="pushButton_5">
-                   <property name="text">
-                    <string>Add</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
+                <property name="text">
+                 <string>Corrected Phase</string>
+                </property>
                </widget>
               </item>
-              <item row="2" column="0">
-               <widget class="QFrame" name="frame_4">
-                <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
+              <item row="1" column="0">
+               <widget class="QWidget" name="widget_14" native="true">
+                <property name="styleSheet">
+                 <string notr="true">border:0px</string>
                 </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
-                <layout class="QGridLayout" name="gridLayout_18">
-                 <item row="0" column="1">
-                  <widget class="QPushButton" name="pushButton_6">
-                   <property name="text">
-                    <string>Remove</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="0">
-                  <widget class="QPushButton" name="pushButton_7">
-                   <property name="text">
-                    <string>Apply</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
                </widget>
               </item>
              </layout>
@@ -531,33 +490,65 @@
              </layout>
             </widget>
            </item>
-           <item row="2" column="0" colspan="2">
-            <widget class="QWidget" name="widget_13" native="true">
+           <item row="0" column="1">
+            <widget class="QWidget" name="widget_8" native="true">
              <property name="styleSheet">
-              <string notr="true">  border: 2px solid rgb(25, 0, 108);
-  border-radius: 10px;</string>
+              <string notr="true"/>
              </property>
-             <layout class="QGridLayout" name="gridLayout_19">
-              <item row="0" column="0" alignment="Qt::AlignTop">
-               <widget class="QLabel" name="label_13">
-                <property name="font">
-                 <font>
-                  <pointsize>14</pointsize>
-                 </font>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">border:0px</string>
-                </property>
-                <property name="text">
-                 <string>Corrected Phase</string>
-                </property>
-               </widget>
+             <layout class="QGridLayout" name="gridLayout_16">
+              <item row="0" column="0">
+               <widget class="QComboBox" name="comboBox_3"/>
               </item>
               <item row="1" column="0">
-               <widget class="QWidget" name="widget_14" native="true">
-                <property name="styleSheet">
-                 <string notr="true">border:0px</string>
+               <widget class="QFrame" name="frame_3">
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
                 </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QGridLayout" name="gridLayout_17">
+                 <item row="0" column="0" alignment="Qt::AlignHCenter">
+                  <widget class="QLineEdit" name="lineEdit">
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QPushButton" name="pushButton_5">
+                   <property name="text">
+                    <string>Add</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QFrame" name="frame_4">
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QGridLayout" name="gridLayout_18">
+                 <item row="0" column="1">
+                  <widget class="QPushButton" name="pushButton_6">
+                   <property name="text">
+                    <string>Remove</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="0">
+                  <widget class="QPushButton" name="pushButton_7">
+                   <property name="text">
+                    <string>Apply</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
                </widget>
               </item>
              </layout>
@@ -753,7 +744,7 @@
           </size>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="page_1">
           <layout class="QGridLayout" name="gridLayout">
@@ -823,9 +814,6 @@
          </widget>
         </widget>
        </item>
-       <item row="1" column="0">
-        <widget class="QLineEdit" name="lineEdit"/>
-       </item>
       </layout>
      </widget>
     </item>
@@ -871,6 +859,9 @@
          </property>
          <property name="checkable">
           <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
          </property>
          <property name="autoExclusive">
           <bool>false</bool>
