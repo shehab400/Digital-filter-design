@@ -70,6 +70,7 @@ class MyWindow(QMainWindow):
         self.central_widget = QWidget(self)
         self.scene = QGraphicsScene(self)
         self.touchPad.setScene(self.scene)
+        self.ui.checkBox.stateChanged.connect(self.updateConjugate)
         # self.worker.progress.connect(self.UpdatePlots)
         # self.work_requested.connect(self.worker.do_work)
         
@@ -443,6 +444,8 @@ class MyWindow(QMainWindow):
                     self.plottedZeros.append(scatter_item)
                     self.ui.plotWidget1.addItem(scatter_item)
                     self.zeros.append(zero)
+                    if self.ui.checkBox.isChecked():
+                        self.updateConjugate()
 
                 elif self.ui.radioButton.isChecked():
                     pole = complex(x, y)
@@ -450,10 +453,40 @@ class MyWindow(QMainWindow):
                     self.plottedPoles.append(scatter_item)
                     self.ui.plotWidget1.addItem(scatter_item)
                     self.poles.append(pole)
+                    if self.ui.checkBox.isChecked():
+                        self.updateConjugate()
 
 
                 self.update_Mag_Phase_Response()
                 # self.update_CorrectedPhase_Plot()
+
+    def updateConjugate(self):
+        if self.ui.checkBox.isChecked() == True:
+            if self.ui.radioButton_2.isChecked():
+                t = len(self.zeros)
+                p = 0
+            elif self.ui.radioButton.isChecked():
+                t = len(self.poles)
+                p = 1
+            if t > 0:
+                if p == 0:
+                    temp = np.conjugate(self.zeros[-1])
+                    x = np.real(temp)
+                    y = np.imag(temp)
+                    scatter_item = pg.ScatterPlotItem(x=[x], y=[y], pen=pg.mkPen('g'), symbol='o')
+                    self.plottedZeros.append(scatter_item)
+                    self.ui.plotWidget1.addItem(scatter_item)
+                    self.zeros.append(temp)
+                elif p == 1:
+                    temp = np.conjugate(self.poles[-1])
+                    x = np.real(temp)
+                    y = np.imag(temp)
+                    scatter_item = pg.ScatterPlotItem(x=[x], y=[y], pen=pg.mkPen('r'), symbol='x')
+                    self.plottedPoles.append(scatter_item)
+                    self.ui.plotWidget1.addItem(scatter_item)
+                    self.poles.append(np.conjugate(temp))
+            self.update_Mag_Phase_Response()
+
     
 
     def update_CorrectedPhase_Plot(self):
